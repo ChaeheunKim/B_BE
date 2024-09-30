@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.dto.ActivityResponseDTO;
-import org.example.dto.PostRequestDTO;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;

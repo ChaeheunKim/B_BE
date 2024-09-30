@@ -1,13 +1,10 @@
 package org.example.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.entity.User;
 
 import java.util.List;
 
-//import jakarta.validation
 @Getter
 @Setter
 public class PostRequestDTO {

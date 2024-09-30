@@ -2,9 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
