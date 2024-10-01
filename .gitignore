@@ -40,3 +40,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### .env ###
+.env*
+
+### resources의 저장된 사진들 ###
+/resources/static/uploads/images/
