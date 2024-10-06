@@ -38,14 +38,6 @@ public class Image extends BaseEntity {
     @Column(name = "img_thumbnail", nullable = false)
     private char img_thumbnail;
 
-    // 연관관계 편의 메소드
-    public void setPost(Post post) {
-        this.post = post;
-        if (post != null && !post.getImages().contains(this)) {
-            post.getImages().add(this);
-        }
-    }
-
     @Builder
     public Image(Post post,String img_name, String img_url, String img_originName, Long img_size, String img_ext, char img_thumbnail){
         this.post = post;

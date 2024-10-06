@@ -33,29 +33,30 @@ public class PostImageService {
             // 이미지 파일 저장 경로 설정
             String uploadsDir = "src/main/resources/static/uploads/images/";
 
+            if(images != null) {
+                if (!images.get(0).isEmpty()) { // image가 없으면 이미지 저장x
+                    // 각 이미지 파일 업로드 및 DB 저장
+                    for (int i = 0; i < images.size(); i++) {
+                        MultipartFile image = images.get(i);
 
+                        // 이미지 파일 경로 저장
+                        String dbFilePath = saveImage(image, uploadsDir);
 
-            // 각 이미지 파일 업로드 및 DB 저장
-            for (int i = 0; i < images.size(); i++) {
-                MultipartFile image = images.get(i);
+                        // 속성 생성
+                        String img_name = image.getName();
+                        Long img_size = image.getSize();
+                        String img_originName = image.getOriginalFilename();
+                        String img_ext = StringUtils.getFilenameExtension(image.getOriginalFilename());
 
-                // 이미지 파일 경로 저장
-                String dbFilePath = saveImage(image, uploadsDir);
+                        // 썸네일 설정
+                        char img_thumbnail = (i == thumbnail_number - 1) ? 'Y' : 'N';
 
-                // 속성 생성
-                String img_name = image.getName();
-                Long img_size = image.getSize();
-                String img_originName = image.getOriginalFilename();
-                String img_ext = StringUtils.getFilenameExtension(image.getOriginalFilename());
-
-                // 썸네일 설정
-                char img_thumbnail = (i == thumbnail_number - 1) ? 'Y' : 'N';
-
-                // Image 엔티티 생성 및 저장
-                Image newImage = new Image(post, img_name, dbFilePath, img_originName, img_size, img_ext, img_thumbnail);
-                imageRepository.save(newImage);
+                        // Image 엔티티 생성 및 저장
+                        Image newImage = new Image(post, img_name, dbFilePath, img_originName, img_size, img_ext, img_thumbnail);
+                        imageRepository.save(newImage);
+                    }
+                }
             }
-
         }catch (IOException e){
             e.printStackTrace();
         }

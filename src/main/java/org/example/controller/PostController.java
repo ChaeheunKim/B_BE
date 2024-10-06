@@ -4,6 +4,7 @@ package org.example.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.PostRequestDTO;
+import org.example.dto.PostResponseDTO;
 import org.example.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,15 @@ public class PostController {
         int postId = postService.createPost(requestDTO, image);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("게시글 등록 완료. 게시글번호 : " + postId);
+    }
+
+    @GetMapping("/post")
+    public ResponseEntity<?> getPostList(@Valid @RequestBody PostRequestDTO requestDTO){
+        List<PostResponseDTO> posts = postService.getPostList();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(posts);
+
     }
 
 
