@@ -24,9 +24,10 @@ public class User {
     @Column(name = "cardinal", nullable = false)
     private Integer cardinal;
 
-    //TO DO: enum으로 바꾸기
-    @Column(name = "join_state")
-    private boolean state;
+    @Column(name = "state")
+    private State state;
+
+
 
     @Column(name = "part", nullable = false)
     private String part;
@@ -39,14 +40,14 @@ public class User {
     private String email;
 
     @Builder
-    public User(String password, String name, Integer cardinal, boolean state, String part,  Role grade,String email) {
+    public User(String password, String name, Integer cardinal, String part,  Role grade,String email,State state) {
        this.password=password;
        this.name=name;
        this.cardinal=cardinal;
-       this.state=state;
        this.part=part;
        this.grade=grade;
        this.email=email;
+       this.state=state;
     }
 
 }

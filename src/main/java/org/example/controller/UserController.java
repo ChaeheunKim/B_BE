@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
 import org.example.entity.ResponseEntityProvider;
-import org.example.repository.UserRepository;
 import org.example.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

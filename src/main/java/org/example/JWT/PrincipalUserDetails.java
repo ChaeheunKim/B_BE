@@ -2,6 +2,7 @@ package org.example.JWT;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.example.entity.Role;
 import org.example.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,10 +61,9 @@ public class PrincipalUserDetails implements UserDetails {
         return true;
     }
 
-    /*
-    public String getName() {
-        return null;
-    }
-    
-     */
+    public Role getGrade() {
+        return user.getGrade();}
 }
+
+
+

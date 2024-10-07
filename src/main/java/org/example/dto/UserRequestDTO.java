@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.entity.Role;
+import org.example.entity.State;
 import org.example.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -31,10 +32,8 @@ public class UserRequestDTO {
 
         @NotNull(message = "파트는 필수 입력 값입니다.")
         private String part;
-        private boolean state;
 
-
-        public User toEntity(Role role) {
+        public User toEntity(Role role, State state) {
             return User.builder()
                     .name(name)
                     .password(password)
@@ -59,8 +58,8 @@ public class UserRequestDTO {
 
         @NotNull(message = "비밀번호는 필수 입력 값입니다.")
         private String password;
-        private boolean state;
-        public LoginRequestDTO(String email, String password,boolean state) {
+        private State state;
+        public LoginRequestDTO(String email, String password, State state) {
             this.email = email;
             this.password = password;
             this.state=state;
