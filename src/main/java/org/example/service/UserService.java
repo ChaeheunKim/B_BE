@@ -12,7 +12,7 @@ public interface UserService {
      * @return 수정 결과를 포함한 응답 DTO
      */
 
-    /**
+    /*
      * 사용자 이미지 삭제 로직 정의
      * @param userId 사용자 ID
      * @return 삭제 결과를 포함한 응답 DTO
@@ -21,4 +21,4 @@ public interface UserService {
     UserDetailResponseDTO updateUserDetails(Long userId, MultipartFile image, UserDetailRequestDTO requestDTO);
     UserDetailResponseDTO deleteUserImage(Long userId);
 }
-/*
+*/

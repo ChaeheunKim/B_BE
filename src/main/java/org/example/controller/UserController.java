@@ -1,4 +1,4 @@
-/**
+/*
 package org.example.controller;
 
 import org.example.dto.UserDetailRequestDTO;
@@ -46,4 +46,4 @@ public class UserController {
         return ResponseEntity.ok(responseDTO);  // 성공 응답 반환
     }
 }
-/*
+*/
