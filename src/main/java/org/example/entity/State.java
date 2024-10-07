@@ -2,10 +2,9 @@ package org.example.entity;
 
 public enum State {
 
-
-        accept("승인"),
-        waiting("대기"),
-        refuse("부회장");
+    approved("승인"),
+    pending("대기"),
+    rejected("거절");
         private final String description;
 
         State (String description) {

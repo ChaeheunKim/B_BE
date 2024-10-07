@@ -2,12 +2,13 @@ package org.example.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.entity.BaseEntity;
 import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @Component
-public class UserResponseDTO {
+public class UserResponseDTO  {
 
     public static class SignupResponseDTO {
         String email;
@@ -50,6 +51,42 @@ public class UserResponseDTO {
         public LoginResponseDTO(String email, String password) {
             this.email = email;
             this.password=password;
+        }
+
+    }
+
+    @Getter
+    @Setter
+    public static class adminWaitingResponseDTO extends BaseEntity {
+        String name;
+
+        String email;
+
+
+
+        public adminWaitingResponseDTO(String email, String name) {
+            this.email = email;
+            this.name = name;
+        }
+
+    }
+
+    @Getter
+    @Setter
+    public static class adminmemberResponseDTO extends BaseEntity {
+        String name;
+
+        String email;
+        int cardinal;
+        String part;
+
+
+
+        public adminmemberResponseDTO(String email, String name,int cardinal,String part) {
+            this.email = email;
+            this.name = name;
+            this.cardinal=cardinal;
+            this.part=part;
         }
 
     }

@@ -33,6 +33,8 @@ public class UserRequestDTO {
         @NotNull(message = "파트는 필수 입력 값입니다.")
         private String part;
 
+        private State state;
+
         public User toEntity(Role role, State state) {
             return User.builder()
                     .name(name)

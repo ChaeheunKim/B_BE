@@ -35,7 +35,7 @@ public class UserService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
-        if(request.getState().equals(State.waiting) | request.getState().equals(State.refuse)) {
+        if(request.getState().equals(State.pending) | request.getState().equals(State.rejected)) {
             throw new IllegalArgumentException("계정이 승인되지 않았습니다.");
         }
         String perfix = "Bearer ";
@@ -54,11 +54,7 @@ public class UserService {
         // 비밀번호 암호화
         requestDTO.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
 
-
-
-        // TO-DO : 유저 권한 멤버 별로 부여해야 함.
-
-        userRepository.save(requestDTO.toEntity(Role.USER, State.waiting));
+        userRepository.save(requestDTO.toEntity(Role.USER, State.pending));
 
     }
 }

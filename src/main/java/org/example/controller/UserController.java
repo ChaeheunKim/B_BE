@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
 import org.example.entity.ResponseEntityProvider;
+import org.example.entity.State;
 import org.example.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,8 @@ public class UserController {
     @PostMapping("/user/signup")
     public ResponseEntity signup(@RequestBody @Valid UserRequestDTO.signupRequestDTO signuprequestDTO, HttpServletResponse http){
             userService.signup(signuprequestDTO);
-            return responseEntityProvider.successWithoutData("회원가입에 성공했습니다.");
+            signuprequestDTO.setState(State.pending);
+            return responseEntityProvider.successWithData("회원가입 요청에 성공했습니다.",signuprequestDTO);
         }
 
 }
