@@ -1,4 +1,7 @@
 spring:
+  h2:
+    console:
+      enabled: true
   config:
     import: optional:file:.env[.properties]
   datasource:
@@ -6,6 +9,7 @@ spring:
     username: ${LOCAL_DB_USERNAME}
     password: ${LOCAL_DB_PASSWORD}
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: update # create로 하면 킬때마다 db데이터 사라짐.
     show-sql: true
@@ -15,5 +19,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
       default_batch_fetch_size: 100
     open-in-view: false
+secret: 405c8ec2dbb7f3665e4d40985a4700acc9f58b5f572348c0b59aa5667cf6f1fef1dacc6be8d3558d0036f871502f1ff4df7a1bdbe772095e47eb8797b9d44a2d
+validityHours: 3
 
 
