@@ -2,20 +2,16 @@ package org.example.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.JWT.JwtTokenProvider;
-import org.example.JWT.PrincipalUserDetails;
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
-import org.example.entity.ResponseEntityProvider;
 import org.example.entity.Role;
 import org.example.entity.State;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static javax.management.Query.or;
 
 @RequiredArgsConstructor
 @Service
@@ -32,12 +28,7 @@ public class UserService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
-        }
-        if(request.getState().equals(State.pending) | request.getState().equals(State.rejected)) {
-            throw new IllegalArgumentException("계정이 승인되지 않았습니다.");
-        }
+
         String perfix = "Bearer ";
 
         String token = perfix + jwttokenProvider.createToken(user.getEmail());

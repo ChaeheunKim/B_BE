@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, User> {
 
     Optional<User> findByEmail(String email);
-    List<User> findByApprovalStatus(State status);
+    List<User> findByState(State state);
 
 
 }

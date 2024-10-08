@@ -17,6 +17,6 @@ public class AdminpageService {
 
 
     public List<User> getPendingUsers() {
-        return userRepository.findByApprovalStatus(State.pending);
+        return userRepository.findByState(State.pending);
     }
 }

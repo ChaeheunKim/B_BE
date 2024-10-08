@@ -3,6 +3,7 @@ package org.example.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.entity.BaseEntity;
+import org.example.entity.State;
 import org.springframework.stereotype.Component;
 
 @Getter
@@ -16,9 +17,9 @@ public class UserResponseDTO  {
         String name;
         int cardinal;
         String part;
-        boolean state;
+        State state;
 
-        public SignupResponseDTO(String email, String password, String name, int cardinal, String part,boolean state) {
+        public SignupResponseDTO(String email, String password, String name, int cardinal, String part,State state) {
             this.email = email;
             this.password = password;
             this.name = name;
