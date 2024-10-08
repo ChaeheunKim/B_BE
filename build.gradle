@@ -41,6 +41,17 @@ dependencies {
     //security 의존성
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    implementation 'com.h2database:h2'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    //SMTP
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+
 
 
 

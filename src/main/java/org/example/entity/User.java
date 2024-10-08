@@ -24,6 +24,7 @@ public class User extends BaseEntity {
     @Column(name = "cardinal", nullable = false)
     private Integer cardinal;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private State state;
 

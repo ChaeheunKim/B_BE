@@ -19,7 +19,25 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
       default_batch_fetch_size: 100
     open-in-view: false
-secret: 405c8ec2dbb7f3665e4d40985a4700acc9f58b5f572348c0b59aa5667cf6f1fef1dacc6be8d3558d0036f871502f1ff4df7a1bdbe772095e47eb8797b9d44a2d
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: "chee0630"
+    password: "qkrqhrja"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
 validityHours: 3
+secret: ${secret}
+smtpID: ${smtpID}
+smtpPW: ${smtpPW}
 
 
