@@ -6,6 +6,9 @@ import org.example.entity.BaseEntity;
 import org.example.entity.State;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
 @Setter
 @Component
@@ -62,12 +65,14 @@ public class UserResponseDTO  {
         String name;
 
         String email;
+        LocalDateTime  created_at;
 
 
 
-        public adminWaitingResponseDTO(String email, String name) {
+        public adminWaitingResponseDTO(String email, String name, LocalDateTime created_at) {
             this.email = email;
             this.name = name;
+            this.created_at=created_at;
         }
 
     }
