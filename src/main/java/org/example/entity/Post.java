@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,41 +19,46 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int post_id;
+    private int postId;
 
     @Column(name = "user_id", nullable = false)
-    private String user_id;
-
-    @OneToOne
-    @JoinColumn(name = "acti_id")
-    private Activity activity;
+    private String userId;
 
     @Column(nullable = false)
-    private String post_title;
+    private String title;
 
-    @Column
-    private String post_intro;
-
-    @Column(nullable = false)
-    private String post_content;
+    @Column(nullable = false) // TEXT 사용 필요
+    private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @CreatedDate
-    private LocalDateTime createdAt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false) // Enum 사용필요
+    private Category category;
+
+    @Column(name = "participant", nullable = false) // Enum 사용필요
+    private String  participant;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "projectCategory", nullable = false)
+    private ProjectCategory  projectCategory;
+
+    @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
+    private String period;
+
+
 
     @Builder
-    public Post(String user_id, List<Image> images , Activity activity, String post_title, String post_content, String post_intro){
-        this.user_id = user_id;
+    public Post(int postId, List<Image> images , String title, String content,
+                 Category category, ProjectCategory projectCategory, String period){
+        this.postId = postId;
         this.images = images;
-        this.activity = activity;
-        this.post_title = post_title;
-        this.post_content = post_content;
-        this.post_intro = post_intro;
-        this.createdAt = LocalDateTime.now();
-//        this.created_at = created_at;
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.projectCategory = projectCategory;
+        this.period = period;
     }
 
 }

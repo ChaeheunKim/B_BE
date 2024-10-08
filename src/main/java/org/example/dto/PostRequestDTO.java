@@ -2,6 +2,9 @@ package org.example.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.entity.Category;
+import org.example.entity.Post;
+import org.example.entity.ProjectCategory;
 
 import java.util.List;
 
@@ -9,16 +12,24 @@ import java.util.List;
 @Setter
 public class PostRequestDTO {
 
-    private int postId;
-    private String user_id;
+    private int post_id;
     private String title;
-    private String intro;
     private String content;
-    private String category;
-    private String url;
+    private Category category;
     private String  participant;
-    private char isProject;
-    private String period;
-    private int img_thumbnail;
-    private List<ImageRequestDTO> images;
+    private ProjectCategory projectCategory;
+    private String period; // 날짜 데이터 수정 필요
+//    private int img_thumbnail; 썸네일 번호 논의 필요
+    private List<ImageRequestDTO > images;
+
+    public Post toEntity(PostRequestDTO dto){
+        return Post.builder()
+                .title(dto.title)
+                .content(dto.content)
+                .category(dto.category)
+                .participant(dto.participant)
+                .projectCategory(dto.projectCategory)
+                .period(dto.period)
+                .build();
+    }
 }
