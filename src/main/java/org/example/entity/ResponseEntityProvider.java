@@ -31,6 +31,5 @@ public class ResponseEntityProvider<T> {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-
-
 }
+

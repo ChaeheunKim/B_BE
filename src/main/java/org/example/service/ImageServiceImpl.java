@@ -33,6 +33,7 @@ public class ImageServiceImpl implements ImageService {
 
             // 성공 시 응답 데이터 설정
             responseDTO.setResponse("Image uploaded successfully to " + filePath);
+            responseDTO.setImageUrl("/uploads/user_" + userId + "/" + image.getOriginalFilename());  // 이미지 URL 설정
         } catch (IOException e) {
             // 오류 발생 시 응답 데이터 설정
             responseDTO.setStatus("error");

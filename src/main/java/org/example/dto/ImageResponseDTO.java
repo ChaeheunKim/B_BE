@@ -4,6 +4,7 @@ public class ImageResponseDTO {
     private String status;  // 요청 성공 여부 (success or error)
     private Object response;  // 성공 시의 응답 데이터
     private String error;  // 오류 발생 시의 에러 메시지
+    private String imageUrl; // 이미지 URL
 
     // getter와 setter 메서드
     public String getStatus() {
@@ -28,5 +29,13 @@ public class ImageResponseDTO {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

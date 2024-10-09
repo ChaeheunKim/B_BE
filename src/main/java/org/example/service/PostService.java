@@ -21,11 +21,12 @@ public class PostService {
 
     /**
      * Post 등록
+     *
      * @param requestDTO - 게시물 요청 데이터
-     * @param images - 업로드할 이미지 파일 리스트
+     * @param images     - 업로드할 이미지 파일 리스트
      * @return postId - 생성된 게시물의 ID
      */
-    public int createPost(PostRequestDTO requestDTO, List<MultipartFile> images){
+    public int createPost(PostRequestDTO requestDTO, List<MultipartFile> images) {
 
         Post post = requestDTO.toEntity(requestDTO);
         boolean imgThumbnail = requestDTO.isImgThumbnail();
@@ -36,4 +37,6 @@ public class PostService {
         postImageService.uploadPostImages(post, images, imgThumbnail);
 
         return post.getPostId();
+
     }
+}

@@ -1,4 +1,33 @@
 
-
+spring:
+  h2:
+    console:
+      enabled: true
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update # create로 하면 킬때마다 db데이터 사라짐.
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+      default_batch_fetch_size: 100
+    open-in-view: false
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}    # AWS Access Key
+      secret-key: ${AWS_SECRET_ACCESS_KEY} # AWS Secret Key
+    s3:
+      bucket: ${BUCKET_NAME} # S3 버킷 이름
+    region:
+      static: ${REGION}    # S3 버킷의 리전
 
 
