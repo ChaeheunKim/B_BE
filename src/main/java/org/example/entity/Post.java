@@ -42,22 +42,26 @@ public class Post extends BaseEntity {
     private String  participant;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "projectCategory", nullable = false)
+    @Column(name = "projectCategory", nullable = true)
     private ProjectCategory  projectCategory;
 
     @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
     private LocalDateTime period;
 
-    @Builder
-    public Post(int postId, List<PostImage> images , String title, String content,
-                 Category category, ProjectCategory projectCategory, LocalDateTime period){
-        this.postId = postId;
-        this.images = images;
-        this.title = title;
-        this.content = content;
-        this.category = category;
-        this.projectCategory = projectCategory;
-        this.period = period;
-    }
+    @Column(name = "part", nullable = true)
+    private Part part;
+
+//    @Builder
+//    public Post(int postId, List<PostImage> images , String title, String content,
+//                 Category category, ProjectCategory projectCategory, LocalDateTime period, Part part){
+//        this.postId = postId;
+//        this.images = images;
+//        this.title = title;
+//        this.content = content;
+//        this.category = category;
+//        this.projectCategory = projectCategory;
+//        this.period = period;
+//        this.part = part;
+//    }
 
 }

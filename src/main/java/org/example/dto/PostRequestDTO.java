@@ -3,6 +3,7 @@ package org.example.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.entity.Category;
+import org.example.entity.Part;
 import org.example.entity.Post;
 import org.example.entity.ProjectCategory;
 
@@ -23,6 +24,7 @@ public class PostRequestDTO {
     private ProjectCategory projectCategory;
     private LocalDateTime period; // 날짜 데이터 수정 필요
     private boolean imgThumbnail; // 썸네일 번호 논의 필요
+    private Part part;
 
     public Post toEntity(PostRequestDTO dto){
         return Post.builder()
@@ -32,6 +34,7 @@ public class PostRequestDTO {
                 .participant(toString(participant))
                 .projectCategory(dto.projectCategory)
                 .period(dto.period)
+                .part(dto.part)
                 .build();
     }
 

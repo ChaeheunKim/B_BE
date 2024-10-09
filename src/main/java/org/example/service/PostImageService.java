@@ -43,7 +43,7 @@ public class PostImageService {
             String s3ImageUrl = saveImageToS3(image);
 
             // 이미지 메타데이터 설정
-            String imgName = image.getName();
+            String imgName = image.getOriginalFilename();
 
             // Image 엔티티 생성 및 저장
             PostImage postImage = new PostImage(post, imgName, s3ImageUrl, imgThumbnail);
