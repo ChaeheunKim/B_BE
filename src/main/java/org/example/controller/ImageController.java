@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.dto.ImageResponseDTO;
+import org.example.entity.ResponseEntityProvider;
 import org.example.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,12 @@ public class ImageController {
     @Autowired
     private ImageService imageService;  // ImageService를 주입받아 사용
 
+    private final ResponseEntityProvider responseEntityProvider; // ResponseEntityProvider 주입
+
+    public ImageController(ImageService imageService, ResponseEntityProvider responseEntityProvider) {
+        this.imageService = imageService;
+        this.responseEntityProvider = responseEntityProvider;
+    }
     /**
      * 사용자 이미지 업로드
      * @param userId URL 경로에서 사용자 ID를 받아옴
@@ -26,6 +33,6 @@ public class ImageController {
             @PathVariable("user_id") Long userId,  // URL 경로에서 사용자 ID 추출
             @RequestPart("image") MultipartFile image) {  // multipart 형식으로 이미지를 받음
         ImageResponseDTO responseDTO = imageService.uploadImage(userId, image);  // 이미지 업로드 서비스 호출
-        return ResponseEntity.ok(responseDTO);  // 성공 응답 반환
+        return responseEntityProvider.successWithData("이미지 업로드에 성공했습니다.", responseDTO); // 성공 응답과 데이터를 함께 반환
     }
 }

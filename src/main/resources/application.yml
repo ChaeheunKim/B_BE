@@ -19,25 +19,13 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
       default_batch_fetch_size: 100
     open-in-view: false
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username: "chee0630"
-    password: "qkrqhrja"
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            enable: true
-  redis:
-    host: 127.0.0.1
-    port: 6379
-validityHours: 3
-secret: ${secret}
-smtpID: ${smtpID}
-smtpPW: ${smtpPW}
-
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}    # AWS Access Key
+      secret-key: ${AWS_SECRET_ACCESS_KEY} # AWS Secret Key
+    s3:
+      bucket: ${BUCKET_NAME} # S3 버킷 이름
+    region:
+      static: ${REGION}    # S3 버킷의 리전
 
