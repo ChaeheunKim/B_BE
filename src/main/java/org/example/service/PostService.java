@@ -3,8 +3,10 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.PostRequestDTO;
 import org.example.entity.Post;
+import org.example.entity.User;
 import org.example.repository.PostImageRepository;
 import org.example.repository.PostRepository;
+import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,7 @@ public class PostService {
     private final PostImageRepository postImageRepository;
 
     private final PostImageService postImageService;  // Spring이 관리하는 PostImageService 주입
+    private final UserRepository userRepository;
 
     /**
      * Post 등록
