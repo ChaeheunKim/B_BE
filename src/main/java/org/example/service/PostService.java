@@ -3,8 +3,10 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.PostRequestDTO;
 import org.example.entity.Post;
+import org.example.entity.User;
 import org.example.repository.PostImageRepository;
 import org.example.repository.PostRepository;
+import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,7 @@ public class PostService {
     private final PostImageRepository postImageRepository;
 
     private final PostImageService postImageService;  // Spring이 관리하는 PostImageService 주입
+    private final UserRepository userRepository;
 
     /**
      * Post 등록
@@ -25,17 +28,23 @@ public class PostService {
      * @param images - 업로드할 이미지 파일 리스트
      * @return postId - 생성된 게시물의 ID
      */
-    public int createPost(PostRequestDTO requestDTO, List<MultipartFile> images){
+    public boolean createPost(PostRequestDTO requestDTO, List<MultipartFile> images){
 
-        Post post = requestDTO.toEntity(requestDTO);
-        boolean imgThumbnail = requestDTO.isImgThumbnail();
-        post = postRepository.save(post);
+        try {
+            Post post = requestDTO.toEntity(requestDTO);
+            boolean imgThumbnail = requestDTO.isImgThumbnail();
+            post = postRepository.save(post);
 
 
-        // Spring이 주입한 PostImageService를 사용해 이미지 저장
-        postImageService.uploadPostImages(post, images, imgThumbnail);
+            // Spring이 주입한 PostImageService를 사용해 이미지 저장
+            postImageService.uploadPostImages(post, images, imgThumbnail);
 
-        return post.getPostId();
+            return true;
+        } catch (Exception e) {
+            // 예외 처리 로직 (로깅 등)
+            return false; // 어떤 이유로든 실패하면 false 반환
+        }
+
     }
 
 //    public List<PostResponseDTO> getPostList(PostRequestDTO requestDTO){
@@ -46,18 +55,18 @@ public class PostService {
 //    }
 
 
-//    public int deletePost(PostRequestDTO requestDTO){
-//        // 게시글 조회 및 예외 처리
-//
-//            Post target = postRepository.findById(requestDTO.getPost_id())
-//                    .orElseThrow(() -> new IllegalArgumentException("게시글 삭제 실패! 해당 게시글이 없습니다."));
-//
-//            // 게시글 삭제
-//            postRepository.delete(target);
-//
-//            // 게시글 번호 반환
-//            return target.getPostId();
-//    }
+    public int deletePost(int post_id){
+        // 게시글 조회 및 예외 처리
+
+            Post target = postRepository.findById(post_id)
+                    .orElseThrow(() -> new IllegalArgumentException("게시글 삭제 실패! 해당 게시글이 없습니다."));
+
+            // 게시글 삭제
+            postRepository.delete(target);
+
+            // 게시글 번호 반환
+            return target.getPostId();
+    }
 //
 //    public int updatePost(PostRequestDTO requestDTO){
 //        // 게시글 조회 및 예외 처리
