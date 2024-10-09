@@ -3,10 +3,9 @@ package org.example.JWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.transaction.Transactional;
+import org.example.entity.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -15,26 +14,25 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-@Transactional
+
 @Service
 public class JwtTokenProvider {
     private final String secretKey;
     private final long JwtValidityHours;
 
-
-
+    @Autowired
     public JwtTokenProvider(
             @Value("${secret}") String secretKey,
             @Value("${validityHours}") long JwtValidityHours) {
         this.secretKey = secretKey;
         this.JwtValidityHours = JwtValidityHours;
-
     }
 
 
-    public String createToken(String email) {
-        Claims claims = Jwts.claims().setSubject(email);
-        //claims.put("role", grade);
+    public String createToken(String email, Role role) {
+        Claims claims = Jwts.claims()
+                .setSubject(email);
+        claims.put("role", role);
 
         return Jwts.builder()
                 .setClaims(claims) // JWT 토큰에 담는 클레임(유저 정보)

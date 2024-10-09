@@ -3,6 +3,7 @@ package org.example.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.entity.BaseEntity;
+import org.example.entity.Part;
 import org.example.entity.State;
 import org.springframework.stereotype.Component;
 
@@ -84,11 +85,11 @@ public class UserResponseDTO  {
 
         String email;
         int cardinal;
-        String part;
+        Part part;
 
 
 
-        public adminmemberResponseDTO(String email, String name,int cardinal,String part) {
+        public adminmemberResponseDTO(String email, String name,int cardinal,Part part) {
             this.email = email;
             this.name = name;
             this.cardinal=cardinal;
@@ -97,6 +98,8 @@ public class UserResponseDTO  {
 
     }
 
+    @Getter
+    @Setter
     public static class VerficationResponseDTO{
         String email;
 

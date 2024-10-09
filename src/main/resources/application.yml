@@ -1,43 +1,4 @@
-spring:
-  h2:
-    console:
-      enabled: true
-  config:
-    import: optional:file:.env[.properties]
-  datasource:
-    url: ${LOCAL_DB_URL}
-    username: ${LOCAL_DB_USERNAME}
-    password: ${LOCAL_DB_PASSWORD}
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update # create로 하면 킬때마다 db데이터 사라짐.
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
-      default_batch_fetch_size: 100
-    open-in-view: false
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username: "chee0630"
-    password: "qkrqhrja"
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            enable: true
-  redis:
-    host: 127.0.0.1
-    port: 6379
-validityHours: 3
-secret: ${secret}
-smtpID: ${smtpID}
-smtpPW: ${smtpPW}
+
+
 
 

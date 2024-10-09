@@ -31,7 +31,7 @@ public class User extends BaseEntity {
 
 
     @Column(name = "part", nullable = false)
-    private String part;
+    private Part part;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "grade", nullable = false)
@@ -41,7 +41,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Builder
-    public User(String password, String name, Integer cardinal, String part,  Role grade,String email,State state) {
+    public User(String password, String name, Integer cardinal, Part part,  Role grade,String email,State state) {
        this.password=password;
        this.name=name;
        this.cardinal=cardinal;

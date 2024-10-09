@@ -32,7 +32,7 @@ public class UserService {
 
         String perfix = "Bearer ";
 
-        String token = perfix + jwttokenProvider.createToken(user.getEmail());
+        String token = perfix + jwttokenProvider.createToken(user.getEmail(),user.getGrade());
 
         UserResponseDTO.LoginResponseDTO loginResponseDTO = new UserResponseDTO.LoginResponseDTO(user.getEmail(),user.getPassword());
 
