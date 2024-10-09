@@ -1,24 +1,52 @@
-/**
+
 package org.example.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
-public interface UserService {
-    /**
-     * 사용자 세부 정보 수정 로직 정의
-     * @param userId 사용자 ID
-     * @param image 이미지 파일
-     * @param requestDTO 사용자 세부 정보 DTO
-     * @return 수정 결과를 포함한 응답 DTO
-     */
-
-    /*
-     * 사용자 이미지 삭제 로직 정의
-     * @param userId 사용자 ID
-     * @return 삭제 결과를 포함한 응답 DTO
+import lombok.RequiredArgsConstructor;
+import org.example.JWT.JwtTokenProvider;
+import org.example.dto.UserRequestDTO;
+import org.example.dto.UserResponseDTO;
+import org.example.entity.Role;
+import org.example.entity.State;
+import org.example.entity.User;
+import org.example.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
-    UserDetailResponseDTO updateUserDetails(Long userId, MultipartFile image, UserDetailRequestDTO requestDTO);
-    UserDetailResponseDTO deleteUserImage(Long userId);
+@RequiredArgsConstructor
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwttokenProvider;
+    private final PasswordEncoder passwordEncoder;
+
+
+
+    //로그인 서비스
+    @Transactional(readOnly = true)
+    public UserResponseDTO.LoginResponseWithTokenDTO login(UserRequestDTO.LoginRequestDTO request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+
+
+        String perfix = "Bearer ";
+
+        String token = perfix + jwttokenProvider.createToken(user.getEmail());
+
+        UserResponseDTO.LoginResponseDTO loginResponseDTO = new UserResponseDTO.LoginResponseDTO(user.getEmail(),user.getPassword());
+
+        return new UserResponseDTO.LoginResponseWithTokenDTO(loginResponseDTO, token);
+    }
+
+
+    //회원가입 서비스
+    @Transactional
+    public void signup(UserRequestDTO.signupRequestDTO requestDTO) {
+        // 비밀번호 암호화
+        requestDTO.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+
+        userRepository.save(requestDTO.toEntity(Role.USER, State.pending));
+
+    }
 }
-*/
