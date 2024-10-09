@@ -7,6 +7,7 @@ import org.example.entity.Post;
 import org.example.entity.ProjectCategory;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostResponseDTO {
@@ -20,7 +21,7 @@ public class PostResponseDTO {
         private Category category;
         private String participant;
         private ProjectCategory projectCategory;
-        private String period;
+        private LocalDateTime period;
 
         public PostDetailDTO(Post post, List<MultipartFile> images){
             this.post_id = post.getPostId();
@@ -43,7 +44,7 @@ public class PostResponseDTO {
         private List<MultipartFile> images;
         private Category category;
         private ProjectCategory ProjectCategory;
-        private String period;
+        private LocalDateTime period;
 
         public PostDTO(Post post, List<MultipartFile> images){
             this.post_id = post.getPostId();

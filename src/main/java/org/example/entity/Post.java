@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +46,12 @@ public class Post extends BaseEntity {
     private ProjectCategory  projectCategory;
 
     @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
-    private String period;
+    private LocalDateTime period;
 
     @Builder
     public Post(int postId, List<PostImage> images , String title, String content,
-                 Category category, ProjectCategory projectCategory, String period){
+                 Category category, ProjectCategory projectCategory, LocalDateTime period){
+){
         this.postId = postId;
         this.images = images;
         this.title = title;
