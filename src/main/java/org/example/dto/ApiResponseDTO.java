@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class ApiResponseDTO<T> {
 
+
     private boolean success;
     private String message;
     private T data;
