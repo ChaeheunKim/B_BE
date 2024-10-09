@@ -3,16 +3,15 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.Image;
 import org.example.entity.Post;
-import org.example.repository.ImageRepository;
+import org.example.entity.PostImage;
+import org.example.repository.PostImageRepository;
 import org.example.repository.PostRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,67 +19,79 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PostImageService {
 
-    private final ImageRepository imageRepository;
+    private final PostImageRepository postImageRepository;
     private final PostRepository postRepository;
 
-    /*
-    * 사진 등록
-    * @param postId
-    * @param images
-    * */
-    public void uploadImages(Post post, List<MultipartFile> images, int thumbnail_number){
-        try {
-            // 이미지 파일 저장 경로 설정
-            String uploadsDir = "src/main/resources/static/uploads/images/";
+    private final S3Client s3Client; // AWSConfig를 통해 주입된 S3Client
 
-            if(images != null) {
-                if (!images.get(0).isEmpty()) { // image가 없으면 이미지 저장x
-                    // 각 이미지 파일 업로드 및 DB 저장
-                    for (int i = 0; i < images.size(); i++) {
-                        MultipartFile image = images.get(i);
+    // S3 버킷 이름 주입
+//    @Value("${aws.s3.bucket}")
+//    private String bucketName;
 
-                        // 이미지 파일 경로 저장
-                        String dbFilePath = saveImage(image, uploadsDir);
+    /**
+     * 여러 이미지를 S3에 업로드하고 DB에 저장
+     * @param post - 해당 게시물 정보
+     * @param images - 업로드할 이미지 파일 리스트
+//     * @param thumbnailNumber - 썸네일로 지정할 이미지 인덱스
+     */
+    public void uploadPostImages(Post post, List<MultipartFile> images, boolean imgThumbnail) {
+        for (int i = 0; i < images.size(); i++) {
+            MultipartFile image = images.get(i);
 
-                        // 속성 생성
-                        String img_name = image.getName();
-                        Long img_size = image.getSize();
-                        String img_originName = image.getOriginalFilename();
-                        String img_ext = StringUtils.getFilenameExtension(image.getOriginalFilename());
+            // 이미지 파일을 S3에 저장하고 URL 반환
+            String s3ImageUrl = saveImageToS3(image);
 
-                        // 썸네일 설정
-                        char img_thumbnail = (i == thumbnail_number - 1) ? 'Y' : 'N';
+            // 이미지 메타데이터 설정
+            String imgName = image.getName();
 
-                        // Image 엔티티 생성 및 저장
-                        Image newImage = new Image(post, img_name, dbFilePath, img_originName, img_size, img_ext, img_thumbnail);
-                        imageRepository.save(newImage);
-                    }
-                }
-            }
-        }catch (IOException e){
-            e.printStackTrace();
+            // Image 엔티티 생성 및 저장
+            PostImage postImage = new PostImage(post, imgName, s3ImageUrl,imgThumbnail);
+            postImageRepository.save(postImage);
         }
     }
 
-    // 이미지 파일 저장 메소드
-    private String saveImage(MultipartFile image, String uploadsDir) throws IOException {
-        // 파일 이름 생성
+//    public void uploadUserImages(Post post, List<MultipartFile> images) {
+//        for (int i = 0; i < images.size(); i++) {
+//            MultipartFile image = images.get(i);
+//
+//            // 이미지 파일을 S3에 저장하고 URL 반환
+//            String s3ImageUrl = saveImageToS3(image);
+//
+//            // 이미지 메타데이터 설정
+//            String imgName = image.getName();
+//
+//            // Image 엔티티 생성 및 저장
+//            Image newImage = new Image(post, imgName, s3ImageUrl, imgThumbnail);
+//            userImageRepository.save(newImage);
+//        }
+//    }
+
+        /**
+         * S3에 이미지 파일 저장 메소드
+         * @param image - 업로드할 이미지 파일
+         * @return - 업로드된 이미지의 S3 URL 반환
+         */
+    private String saveImageToS3(MultipartFile image) {
+        // S3에 저장할 파일 이름 생성 (고유한 이름 보장을 위해 UUID 사용)
         String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + image.getOriginalFilename();
+        String s3Key = "uploads/images/" + fileName; // S3 버킷 내 파일 경로 지정
 
-        // 실제 파일이 저장될 경로
-        String filePath = uploadsDir + fileName;
+        try {
+            // S3에 파일 업로드 요청 생성
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+//                    .bucket(bucketName)
+                    .key(s3Key)
+                    .build();
 
-        // DB에 저장할 경로 문자열
-        String dbFilePath = "/uploads/images/" + fileName;
+            // 이미지 파일을 S3에 업로드 (이미지를 바이트 배열로 변환하여 전송)
+            s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromBytes(image.getBytes()));
+            // 업로드된 이미지의 S3 URL 반환
+//            return s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(s3Key)).toExternalForm();
+            return null;
 
-        Path path = Paths.get(filePath); // Path 객체 생성
-        Files.createDirectories(path.getParent()); // 디렉토리 생성
-        Files.write(path, image.getBytes()); // 디렉토리에 파일 저장
-
-        return dbFilePath;
-
+        } catch (IOException e) {
+            // 업로드 실패 시 예외 발생
+            throw new RuntimeException("Failed to upload image to S3", e);
+        }
     }
-
-
-
 }

@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "user_image")
-public class Image extends BaseEntity {
+public class UserImage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +29,12 @@ public class Image extends BaseEntity {
     @Column(name = "img_thumbnail", nullable = false)
     private boolean img_thumbnail;
 
-    @Builder
-    public Image(Post post,String img_name, String img_url, boolean img_thumbnail){
-//        this.post = post;
-        this.img_name = img_name;
-        this.img_url = img_url;
-        this.img_thumbnail = img_thumbnail;
-    }
+//    @Builder
+//    public UserImage(User user,String img_name, String img_url, boolean img_thumbnail){
+//        this.user = user;
+//        this.img_name = img_name;
+//        this.img_url = img_url;
+//        this.img_thumbnail = img_thumbnail;
+//    }
 }
 

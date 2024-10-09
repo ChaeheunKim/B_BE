@@ -33,32 +33,32 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body("게시글 등록 완료. 게시글번호 : " + postId);
     }
 
-    @GetMapping("/post")
-    public ResponseEntity<?> getPostList(@Valid @RequestBody PostRequestDTO requestDTO){
-        List<PostResponseDTO> posts = postService.getPostList(requestDTO);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(posts);
-
-    }
-
-    @DeleteMapping("/post/{post_id}")
-    public ResponseEntity<String> deletePost(@RequestBody PostRequestDTO requestDTO){
-
-        int postId = postService.deletePost(requestDTO);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("게시글 삭제 완료. 게시글 번호: "+ postId);
-    }
-
-    @PatchMapping("/post/{post_id}")
-    public ResponseEntity<String> updatePost(@RequestBody PostRequestDTO requestDTO){
-
-        int postId = postService.updatePost(requestDTO);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("게시글 수정 완료. 게시글 번호: "+ postId);
-    }
+//    @GetMapping("/post")
+//    public ResponseEntity<?> getPostList(@Valid @RequestBody PostRequestDTO requestDTO){
+//        List<PostResponseDTO> posts = postService.getPostList(requestDTO);
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(posts);
+//
+//    }
+//
+//    @DeleteMapping("/post/{post_id}")
+//    public ResponseEntity<String> deletePost(@RequestBody PostRequestDTO requestDTO){
+//
+//        int postId = postService.deletePost(requestDTO);
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body("게시글 삭제 완료. 게시글 번호: "+ postId);
+//    }
+//
+//    @PatchMapping("/post/{post_id}")
+//    public ResponseEntity<String> updatePost(@RequestBody PostRequestDTO requestDTO){
+//
+//        int postId = postService.updatePost(requestDTO);
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body("게시글 수정 완료. 게시글 번호: "+ postId);
+//    }
 
 
 }

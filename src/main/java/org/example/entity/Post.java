@@ -31,7 +31,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
+    private List<PostImage> images = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false) // Enum 사용필요
@@ -47,10 +47,8 @@ public class Post extends BaseEntity {
     @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
     private String period;
 
-
-
     @Builder
-    public Post(int postId, List<Image> images , String title, String content,
+    public Post(int postId, List<PostImage> images , String title, String content,
                  Category category, ProjectCategory projectCategory, String period){
         this.postId = postId;
         this.images = images;

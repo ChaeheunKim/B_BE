@@ -16,20 +16,27 @@ public class PostRequestDTO {
     private String title;
     private String content;
     private Category category;
-    private String  participant;
+    private List<String>  participant;
     private ProjectCategory projectCategory;
     private String period; // 날짜 데이터 수정 필요
-//    private int img_thumbnail; 썸네일 번호 논의 필요
-    private List<ImageRequestDTO > images;
+    private boolean imgThumbnail; // 썸네일 번호 논의 필요
+    private List<ImageRequestDTO> images;
 
     public Post toEntity(PostRequestDTO dto){
         return Post.builder()
                 .title(dto.title)
                 .content(dto.content)
                 .category(dto.category)
-                .participant(dto.participant)
+                .participant(toString(participant))
                 .projectCategory(dto.projectCategory)
                 .period(dto.period)
                 .build();
+    }
+
+    public String toString(List<String> participant){
+        if (participant == null || participant.isEmpty()) {
+            return "";
+        }
+        return String.join(",", participant);
     }
 }
