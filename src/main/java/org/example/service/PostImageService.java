@@ -6,6 +6,7 @@ import org.example.entity.Post;
 import org.example.entity.PostImage;
 import org.example.repository.PostImageRepository;
 import org.example.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -25,8 +26,8 @@ public class PostImageService {
     private final S3Client s3Client; // AWSConfig를 통해 주입된 S3Client
 
     // S3 버킷 이름 주입
-//    @Value("${aws.s3.bucket}")
-//    private String bucketName;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
     /**
      * 여러 이미지를 S3에 업로드하고 DB에 저장
@@ -45,7 +46,7 @@ public class PostImageService {
             String imgName = image.getName();
 
             // Image 엔티티 생성 및 저장
-            PostImage postImage = new PostImage(post, imgName, s3ImageUrl,imgThumbnail);
+            PostImage postImage = new PostImage(post, imgName, s3ImageUrl, imgThumbnail);
             postImageRepository.save(postImage);
         }
     }
@@ -61,7 +62,7 @@ public class PostImageService {
 //            String imgName = image.getName();
 //
 //            // Image 엔티티 생성 및 저장
-//            Image newImage = new Image(post, imgName, s3ImageUrl, imgThumbnail);
+//            UserImage newImage = new UserImage(post, imgName, s3ImageUrl, imgThumbnail);
 //            userImageRepository.save(newImage);
 //        }
 //    }
@@ -79,15 +80,14 @@ public class PostImageService {
         try {
             // S3에 파일 업로드 요청 생성
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-//                    .bucket(bucketName)
+                    .bucket(bucketName)
                     .key(s3Key)
                     .build();
 
             // 이미지 파일을 S3에 업로드 (이미지를 바이트 배열로 변환하여 전송)
             s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromBytes(image.getBytes()));
             // 업로드된 이미지의 S3 URL 반환
-//            return s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(s3Key)).toExternalForm();
-            return null;
+            return s3Client.utilities().getUrl(builder -> builder.bucket(bucketName).key(s3Key)).toExternalForm();
 
         } catch (IOException e) {
             // 업로드 실패 시 예외 발생
