@@ -1,8 +1,12 @@
 package org.example.repository;
 
-import org.example.entity.PostImage;
+
+import org.example.entity.User;
+import org.example.entity.UserImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserImageRepository extends JpaRepository<PostImage, Long> {
+import java.util.Optional;
 
+public interface UserImageRepository extends JpaRepository<UserImage, Long> {
+    UserImage findByUser(User user);
 }

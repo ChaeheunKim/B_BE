@@ -6,11 +6,13 @@ import org.example.dto.PostRequestDTO;
 import org.example.dto.PostResponseDTO;
 import org.example.entity.Category;
 import org.example.entity.Post;
+import org.example.entity.UserImage;
 import org.example.entity.PostImage;
 import org.example.entity.User;
 import org.example.repository.PostImageRepository;
 import org.example.repository.PostRepository;
-import org.example.repository.UserRepository;
+import org.example.repository.UserImageRepository;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+    private final UserImageRepository userImageRepository;
 
     private final PostImageService postImageService;  // Spring이 관리하는 PostImageService 주입
 
@@ -45,6 +48,18 @@ public class PostService {
 
             // Spring이 주입한 PostImageService를 사용해 이미지 저장
             postImageService.uploadPostImages(post, images, imgThumbnail);
+
+            return true;
+        } catch (Exception e) {
+            return false; // 어떤 이유로든 실패하면 false 반환
+        }
+
+    }
+
+    public boolean createUserProfile(MultipartFile image,Long user_id){
+
+        try {
+            postImageService.uploadUserImages(image,user_id);
 
             return true;
         } catch (Exception e) {

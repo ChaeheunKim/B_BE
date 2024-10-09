@@ -22,8 +22,8 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
 
-//    @Column(name = "user_id", nullable = false)
-//    private String userId;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
     @Column(nullable = false)
     private String title;
@@ -48,6 +48,7 @@ public class Post extends BaseEntity {
     @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
     private LocalDateTime period;
 
+
     @Column(name = "part", nullable = true)
     private Part part;
 
@@ -63,5 +64,6 @@ public class Post extends BaseEntity {
 //        this.period = period;
 //        this.part = part;
 //    }
+
 
 }
