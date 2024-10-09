@@ -58,14 +58,14 @@ public class PostService {
     public int deletePost(int post_id){
         // 게시글 조회 및 예외 처리
 
-            Post target = postRepository.findById(post_id)
-                    .orElseThrow(() -> new IllegalArgumentException("게시글 삭제 실패! 해당 게시글이 없습니다."));
+        Post target = postRepository.findById(post_id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 삭제 실패! 해당 게시글이 없습니다."));
 
-            // 게시글 삭제
-            postRepository.delete(target);
+        // 게시글 삭제
+        postRepository.delete(target);
 
-            // 게시글 번호 반환
-            return target.getPostId();
+        // 게시글 번호 반환
+        return target.getPostId();
     }
 //
 //    public int updatePost(PostRequestDTO requestDTO){

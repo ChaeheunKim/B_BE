@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.entity.Part;
 import org.example.entity.Role;
 import org.example.entity.State;
 import org.example.entity.User;
@@ -31,7 +32,7 @@ public class UserRequestDTO {
         private int cardinal;
 
         @NotNull(message = "파트는 필수 입력 값입니다.")
-        private String part;
+        private Part part;
 
         private State state;
 

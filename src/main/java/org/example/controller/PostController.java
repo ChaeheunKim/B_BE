@@ -24,11 +24,15 @@ public class PostController {
     private final PostRepository postRepository;
 
     /*
-    * 상품 등록
-    * @param PostRequestDTO
-    * @return post_id, post_name*/
+
+     * 상품 등록
+     * @param PostRequestDTO
+     * @return post_id, post_name*/
+    
+
     @PostMapping(value = "/post", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<String> createPost(@RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ){
+
         boolean success = postService.createPost(requestDTO, image);
 
         if (success) {
@@ -71,3 +75,4 @@ public class PostController {
 
 
 }
+
