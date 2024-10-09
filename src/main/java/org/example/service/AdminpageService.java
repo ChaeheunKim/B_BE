@@ -19,4 +19,7 @@ public class AdminpageService {
     public List<User> getPendingUsers() {
         return userRepository.findByState(State.pending);
     }
+    public List<User> getapprovedUsers() {
+        return userRepository.findByState(State.approved);
+    }
 }

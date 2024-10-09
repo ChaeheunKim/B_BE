@@ -1,3 +1,4 @@
+
 spring:
   h2:
     console:
@@ -28,4 +29,5 @@ cloud:
       bucket: ${BUCKET_NAME} # S3 버킷 이름
     region:
       static: ${REGION}    # S3 버킷의 리전
+
 

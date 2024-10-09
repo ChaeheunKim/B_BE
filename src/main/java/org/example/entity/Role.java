@@ -1,5 +1,8 @@
 package org.example.entity;
 
+import jakarta.persistence.Entity;
+
+
 public enum Role {
 
         USER("동아리멤버"),

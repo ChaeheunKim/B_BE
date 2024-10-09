@@ -52,8 +52,10 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable) // form login 사용 X
                 .httpBasic(AbstractHttpConfigurer::disable) // http basic 사용 X
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/test/**").authenticated()
-                        .anyRequest().permitAll()) // 모든 요청 허용
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/user/**").authenticated()
+                        .anyRequest().permitAll()
+                )
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))

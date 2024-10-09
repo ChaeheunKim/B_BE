@@ -3,6 +3,7 @@ package org.example.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.entity.BaseEntity;
+import org.example.entity.Part;
 import org.example.entity.State;
 import org.springframework.stereotype.Component;
 
@@ -14,24 +15,7 @@ import java.util.Date;
 @Component
 public class UserResponseDTO  {
 
-    public static class SignupResponseDTO {
-        String email;
-        String password;
-        String name;
-        int cardinal;
-        String part;
-        State state;
 
-        public SignupResponseDTO(String email, String password, String name, int cardinal, String part,State state) {
-            this.email = email;
-            this.password = password;
-            this.name = name;
-            this.cardinal=cardinal;
-            this.part=part;
-            this.state=state;
-        }
-
-    }
     @Getter
     @Setter
     public static class LoginResponseWithTokenDTO {
@@ -84,11 +68,11 @@ public class UserResponseDTO  {
 
         String email;
         int cardinal;
-        String part;
+        Part part;
 
 
 
-        public adminmemberResponseDTO(String email, String name,int cardinal,String part) {
+        public adminmemberResponseDTO(String email, String name,int cardinal,Part part) {
             this.email = email;
             this.name = name;
             this.cardinal=cardinal;
@@ -97,6 +81,8 @@ public class UserResponseDTO  {
 
     }
 
+    @Getter
+    @Setter
     public static class VerficationResponseDTO{
         String email;
 

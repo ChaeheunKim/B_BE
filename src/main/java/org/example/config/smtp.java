@@ -10,15 +10,19 @@ import java.util.Properties;
 // 이메일로 인증번호를 전송하기 위한 SMTP 설정
 @Configuration
 public class smtp {
-    @Value("${spring.mail.password:qkrqhrja}")
+
+    @Value("${spring.mail.username}")
+    private String username;
+    @Value("${spring.mail.password}")
     private String password;
+
     @Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
         javaMailSender.setHost("smtp.naver.com");
-        javaMailSender.setUsername("${smtpID}");
-        javaMailSender.setPassword("${smtpPW}");
+        javaMailSender.setUsername(username);
+        javaMailSender.setPassword(password);
 
         javaMailSender.setPort(465);
 
