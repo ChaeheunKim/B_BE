@@ -8,6 +8,7 @@ import org.example.dto.PostResponseDTO;
 import org.example.repository.PostRepository;
 import org.example.service.PostService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,14 +24,18 @@ public class PostController {
     private final PostRepository postRepository;
 
     /*
-    * 상품 등록
-    * @param PostRequestDTO
-    * @return post_id, post_name*/
-    @PostMapping("/post")
-    public ResponseEntity<String> createPost(@Valid @RequestParam("image")List<MultipartFile> image, @RequestBody PostRequestDTO requestDTO){
-        int postId = postService.createPost(requestDTO, image);
+     * 상품 등록
+     * @param PostRequestDTO
+     * @return post_id, post_name*/
+    @PostMapping(value = "/post", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<String> createPost(@RequestPart(value = "image") List<MultipartFile> image, @RequestPart(value = "post") PostRequestDTO requestDTO){
+        boolean success = postService.createPost(requestDTO, image);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("게시글 등록 완료. 게시글번호 : " + postId);
+        if (success) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 생성되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성에 실패했습니다.");
+        }
     }
 
 //    @GetMapping("/post")
@@ -43,12 +48,16 @@ public class PostController {
 //    }
 //
 //    @DeleteMapping("/post/{post_id}")
-//    public ResponseEntity<String> deletePost(@RequestBody PostRequestDTO requestDTO){
+//    public ResponseEntity<String> deletePost(@PathVariable int post_id){
 //
-//        int postId = postService.deletePost(requestDTO);
+//        boolean success = postService.deletePost(post_id);
 //
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body("게시글 삭제 완료. 게시글 번호: "+ postId);
+//
+//        if (success) {
+//            return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 생성되었습니다.");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성에 실패했습니다.");
+//        }
 //    }
 //
 //    @PatchMapping("/post/{post_id}")
@@ -62,3 +71,4 @@ public class PostController {
 
 
 }
+

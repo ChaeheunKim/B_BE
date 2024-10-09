@@ -21,22 +21,77 @@ public class PostService {
 
     /**
      * Post 등록
-     *
      * @param requestDTO - 게시물 요청 데이터
-     * @param images     - 업로드할 이미지 파일 리스트
+     * @param images - 업로드할 이미지 파일 리스트
      * @return postId - 생성된 게시물의 ID
      */
-    public int createPost(PostRequestDTO requestDTO, List<MultipartFile> images) {
+    public boolean createPost(PostRequestDTO requestDTO, List<MultipartFile> images){
 
-        Post post = requestDTO.toEntity(requestDTO);
-        boolean imgThumbnail = requestDTO.isImgThumbnail();
-        post = postRepository.save(post);
+        try {
+            Post post = requestDTO.toEntity(requestDTO);
+            boolean imgThumbnail = requestDTO.isImgThumbnail();
+            post = postRepository.save(post);
 
 
-        // Spring이 주입한 PostImageService를 사용해 이미지 저장
-        postImageService.uploadPostImages(post, images, imgThumbnail);
+            // Spring이 주입한 PostImageService를 사용해 이미지 저장
+            postImageService.uploadPostImages(post, images, imgThumbnail);
 
-        return post.getPostId();
+            return true;
+        } catch (Exception e) {
+            // 예외 처리 로직 (로깅 등)
+            return false; // 어떤 이유로든 실패하면 false 반환
+        }
 
     }
+
+//    public List<PostResponseDTO> getPostList(PostRequestDTO requestDTO){
+//        List<Post> posts = postRepository.findByCategory(requestDTO.getCategory());
+//        return posts.stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList());
+//    }
+
+
+    public int deletePost(int post_id){
+        // 게시글 조회 및 예외 처리
+
+        Post target = postRepository.findById(post_id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 삭제 실패! 해당 게시글이 없습니다."));
+
+        // 게시글 삭제
+        postRepository.delete(target);
+
+        // 게시글 번호 반환
+        return target.getPostId();
+    }
+//
+//    public int updatePost(PostRequestDTO requestDTO){
+//        // 게시글 조회 및 예외 처리
+//
+//            Post target = postRepository.findById(requestDTO.getPost_id())
+//                    .orElseThrow(() -> new IllegalArgumentException("게시글 수정 실패! 해당 게시글이 없습니다."));
+//
+//            // 게시글 수정
+//            target.builder()
+//                    .title(requestDTO.getTitle())
+//                    .content(requestDTO.getContent())
+//                    .category(requestDTO.getCategory())
+//                    .participant(requestDTO.getParticipant())
+//                    .projectCategory(requestDTO.getProjectCategory())
+//                    .period(requestDTO.getPeriod())
+//                    .build();
+//
+//            postRepository.save(target);
+//
+//            // 게시글 번호 반환
+//            return target.getPostId();
+//    }
+//    private PostResponseDTO convertToDTO(Post post){
+//        // Entity를 DTO로 변환
+//        PostResponseDTO dto = new PostResponseDTO();
+//
+//        return dto;
+//    }
+
+
 }

@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     private State state;
 
 
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "part", nullable = false)
     private Part part;
 
