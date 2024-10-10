@@ -48,10 +48,11 @@ public class Post extends BaseEntity {
     @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
     private LocalDateTime period;
 
+    /*
     @Builder
     public Post(int postId, List<PostImage> images , String title, String content,
                  Category category, ProjectCategory projectCategory, LocalDateTime period){
-){
+{
         this.postId = postId;
         this.images = images;
         this.title = title;
@@ -60,5 +61,5 @@ public class Post extends BaseEntity {
         this.projectCategory = projectCategory;
         this.period = period;
     }
-
+*/
 }

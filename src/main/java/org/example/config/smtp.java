@@ -20,11 +20,11 @@ public class smtp {
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
-        javaMailSender.setHost("smtp.naver.com");
+        javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setUsername(username);
         javaMailSender.setPassword(password);
 
-        javaMailSender.setPort(465);
+        javaMailSender.setPort(587);
 
         javaMailSender.setJavaMailProperties(getMailProperties());
 
