@@ -29,10 +29,10 @@ public class UserRequestDTO {
         private String password;
 
         @NotNull(message = "기수는 필수 입력 값입니다.")
-        private int cardinal;
+        private int user_cardinal;
 
         @NotNull(message = "파트는 필수 입력 값입니다.")
-        private Part part;
+        private Part user_part;
 
         private State state;
 
@@ -40,8 +40,8 @@ public class UserRequestDTO {
             return User.builder()
                     .name(name)
                     .password(password)
-                    .cardinal(cardinal)
-                    .part(part)
+                    .cardinal(user_cardinal)
+                    .part(user_part)
                     .grade(role)
                     .email(email)
                     .state(state)
