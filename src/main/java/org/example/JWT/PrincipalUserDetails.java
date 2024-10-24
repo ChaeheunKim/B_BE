@@ -2,8 +2,8 @@ package org.example.JWT;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.example.entity.Role;
-import org.example.entity.User;
+import org.example.user.UserEntity.Role;
+import org.example.user.UserEntity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
