@@ -3,8 +3,8 @@ package org.example.JWT;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.entity.User;
-import org.example.repository.UserRepository;
+import org.example.user.UserEntity.User;
+import org.example.user.UserRepository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

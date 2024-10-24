@@ -20,11 +20,11 @@ public class smtp {
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
-        javaMailSender.setHost("smtp.naver.com");
+        javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setUsername(username);
         javaMailSender.setPassword(password);
 
-        javaMailSender.setPort(465);
+        javaMailSender.setPort(587);
 
         javaMailSender.setJavaMailProperties(getMailProperties());
 
@@ -37,8 +37,8 @@ public class smtp {
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.debug", "true");
-        properties.setProperty("mail.smtp.ssl.trust","smtp.naver.com");
-        properties.setProperty("mail.smtp.ssl.enable","true");
+        //properties.setProperty("mail.smtp.ssl.trust","smtp.gmail.com");
+        //properties.setProperty("mail.smtp.ssl.enable","true");
         return properties;
     }
 
