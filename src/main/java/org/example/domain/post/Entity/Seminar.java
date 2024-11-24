@@ -3,6 +3,7 @@ package org.example.domain.post.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.post.DTO.PostRequestDTO;
+import org.example.domain.post.Service.CommonService;
 import org.example.domain.user.UserEntity.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ import java.util.List;
 @Builder
 @Table(name = "Seminar")
 public class Seminar extends BaseEntity  {
+    CommonService commonService;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,30 +27,28 @@ public class Seminar extends BaseEntity  {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false) // TEXT 사용 필요
+    @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Object> images = new ArrayList<>();
 
-    @Column(name = "participant", nullable = false) // Enum 사용필요
+    @OneToMany(mappedBy = "seminar", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<SeminarImage> images = new ArrayList<>();
+
+    @Column(name = "participant", nullable = false)
     private String participant;
 
 
-    @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
+    @Column(name = "period", nullable = false)
     private LocalDateTime period;
 
-    public Seminar toEntity(PostRequestDTO postRequestDTO,List<Object> images){
-        return Seminar.builder()
-                .title(postRequestDTO.getTitle())
-                .content(postRequestDTO.getContent())
-                .participant(postRequestDTO.getParticipant().toString())
-                .period(postRequestDTO.getPeriod())
-                .images(images)
-                .build();
+    public Seminar (PostRequestDTO postRequestDTO){
+        this.title=postRequestDTO.getTitle();
+        this.content=postRequestDTO.getContent();
+        this.period=postRequestDTO.getPeriod();
+        this.participant= commonService.toString(postRequestDTO.getParticipant());
     }
 
-    public void update(PostRequestDTO postRequestDTO,List<Object> images) {
+    public void update(PostRequestDTO postRequestDTO,List<SeminarImage> images) {
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
         this.participant= postRequestDTO.getParticipant().toString();

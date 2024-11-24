@@ -11,8 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
-    List<Project> findByCategory(ProjectCategory projectCategory);
-    Project findById(int id);
+
 
 
 }

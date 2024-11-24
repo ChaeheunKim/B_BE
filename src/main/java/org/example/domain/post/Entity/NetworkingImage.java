@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "NetworkingImage")
-public  class NetworkingImage  {
+@Table(name = "networking_image")
+public  class NetworkingImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,15 +30,15 @@ public  class NetworkingImage  {
 
     @Column(name = "thumbnail", nullable = false)
     private boolean thumbnail;
-    public NetworkingImage toEntity(Networking networking,String name,String url,boolean thumbnail){
-        return NetworkingImage.builder()
-                .name(name)
-                .url(url)
-                .thumbnail(thumbnail)
-                .networking(networking).build();
+
+    public NetworkingImage(String name, String url, boolean thumbnail) {
+        this.name = name;
+        this.url = url;
+        this.thumbnail = thumbnail;
     }
-
-
-
-
 }
+
+
+
+
+

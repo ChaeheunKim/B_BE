@@ -30,14 +30,12 @@ public class ProjectImage  {
     @Column(name = "thumbnail", nullable = false)
     private boolean thumbnail;
 
-    public ProjectImage toEntity(Project project,String name,String url,boolean thumbnail){
-        return ProjectImage.builder()
-                .name(name)
-                .url(url)
-                .thumbnail(thumbnail)
-                .project(project).build();
+    public ProjectImage (String name,String url,boolean thumbnail, Project project){
+        this.name=name;
+        this.url=url;
+        this.thumbnail=thumbnail;
+        this.project=project;
     }
-
 
 
 

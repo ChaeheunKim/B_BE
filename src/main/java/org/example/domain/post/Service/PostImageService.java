@@ -2,16 +2,13 @@ package org.example.domain.post.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.post.Entity.*;
-import org.example.domain.post.Repository.NetworkingImageRepository;
-import org.example.domain.post.Repository.ProjectImageRepository;
-import org.example.domain.post.Repository.SeminarImageRepository;
-import org.example.domain.post.Repository.StudyImageRepository;
+import org.example.domain.post.Repository.*;
 import org.example.domain.user.UserEntity.User;
 import org.example.domain.user.UserEntity.UserImage;
 import org.example.domain.user.UserRepository.UserImageRepository;
 import org.example.domain.user.UserRepository.UserRepository;
 import org.example.global.errors.ErrorCode;
-import org.example.global.errors.exception.Exception400;
+import org.example.global.errors.exception.Exception404;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,9 +16,9 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,48 +27,95 @@ public class PostImageService {
     private final ProjectImageRepository projectImageRepository;
     private final SeminarImageRepository seminarImageRepository;
     private final NetworkingImageRepository networkingImageRepository;
-    private  final StudyImageRepository studyImageRepository;
+    private final StudyImageRepository studyImageRepository;
     private final UserRepository userRepository;
     private final UserImageRepository userImageRepository;
     private final S3Client s3Client;
-    private final NetworkingImage networkingImage;
-    private final ProjectImage projectImage;
-    private  final SeminarImage seminarImage;
-    private final StudyImage studyImage;
+    private final ProjectRepository projectRepository;
+
 
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
+    //프로젝트 이미지 업로드
+    public List<ProjectImage> uploadProjectImages(int project_id, List<MultipartFile> images, int imgThumbnail_id){
+        List<ProjectImage> createdEntities = new ArrayList<>();
+        //썸네일 이미지 구분 변수
+        int index = 1;
 
-
-    //게시글 이미지 업로드
-    public <T> List<Object> uploadPostImages(T entity, List<MultipartFile> images, boolean imgThumbnail) {
-        List<Object> createdEntities = new ArrayList<>();
+        // project_id를 통해 Project 엔티티를 조회
+        Optional<Project> project = projectRepository.findById(project_id);
 
         for (MultipartFile image : images) {
             String s3ImageUrl = saveImageToS3(image);
             String imgName = image.getOriginalFilename();
-            Object savedImageEntity;
-            // Image 엔티티 생성 및 저장
-            if (entity instanceof ProjectImage) {
-                projectImage.toEntity((Project) entity, imgName,s3ImageUrl,imgThumbnail);
-                savedImageEntity=projectImageRepository.save(projectImage);
-            } else if (entity instanceof SeminarImage) {
-                seminarImage.toEntity((Seminar) entity, imgName,s3ImageUrl,imgThumbnail);
-                savedImageEntity=seminarImageRepository.save(seminarImage);
-            } else if (entity instanceof StudyImage) {
-                studyImage.toEntity((Study) entity, imgName,s3ImageUrl,imgThumbnail);
-                savedImageEntity=studyImageRepository.save(studyImage);
-            } else if (entity instanceof NetworkingImage) {
-                networkingImage.toEntity((Networking) entity,imgName,s3ImageUrl,imgThumbnail);
-                savedImageEntity=studyImageRepository.save(studyImage);
-            } else {
-                throw new Exception400(null, ErrorCode.UNSUPPORTED_MEDIA_TYPE);
-            }
-            createdEntities.add(savedImageEntity);
+
+            // imgThumbnail_id와 index를 비교하여 썸네일 여부 결정
+            boolean imgThumbnail = (index == imgThumbnail_id);
+            ProjectImage projectImageEntity = new ProjectImage(imgName, s3ImageUrl, imgThumbnail, project.get());
+            projectImageRepository.save(projectImageEntity);
+            createdEntities.add(projectImageEntity);
+
+            index++;
         }
         return createdEntities;
+
     }
+
+    //세미나 이미지 업로드
+    public List<SeminarImage> uploadSeminarImages(List<MultipartFile> images, int imgThumbnail_id){
+        List<SeminarImage> createdEntities = new ArrayList<>();
+        int index = 1;
+        for (MultipartFile image : images) {
+            String s3ImageUrl = saveImageToS3(image);
+            String imgName = image.getOriginalFilename();
+            boolean imgThumbnail = (index == imgThumbnail_id);
+
+            SeminarImage SeminarImageEntity=new SeminarImage(imgName,s3ImageUrl,imgThumbnail);
+            seminarImageRepository.save(SeminarImageEntity);
+            createdEntities.add(SeminarImageEntity);
+        }
+        return createdEntities;
+
+    }
+
+    //스터디 이미지 업로드
+    public List<StudyImage> uploadStudyImages(List<MultipartFile> images, int imgThumbnail_id){
+        List<StudyImage> createdEntities = new ArrayList<>();
+        int index = 1;
+
+        for (MultipartFile image : images) {
+            String s3ImageUrl = saveImageToS3(image);
+            String imgName = image.getOriginalFilename();
+            boolean imgThumbnail = (index == imgThumbnail_id);
+
+            StudyImage StudyImageEntity=new StudyImage(imgName,s3ImageUrl,imgThumbnail);
+            studyImageRepository.save(StudyImageEntity);
+            createdEntities.add(StudyImageEntity);
+        }
+        return createdEntities;
+
+    }
+
+    //네트워킹 이미지 업로드
+    public List<NetworkingImage> uploadNetworkingImages(List<MultipartFile> images, int imgThumbnail_id){
+        List<NetworkingImage> createdEntities = new ArrayList<>();
+        int index = 1;
+
+        for (MultipartFile image : images) {
+            String s3ImageUrl = saveImageToS3(image);
+            String imgName = image.getOriginalFilename();
+            boolean imgThumbnail = (index == imgThumbnail_id);
+
+            NetworkingImage NetworkingImageEntity = new NetworkingImage(imgName,s3ImageUrl,imgThumbnail);
+            networkingImageRepository.save(NetworkingImageEntity);
+            createdEntities.add(NetworkingImageEntity);
+        }
+        return createdEntities;
+
+    }
+
+
 
     //유저 이미지 업로드
     public void uploadUserImages(MultipartFile image, Long user_id) {

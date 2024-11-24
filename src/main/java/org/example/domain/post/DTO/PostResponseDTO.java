@@ -9,52 +9,7 @@ import org.example.domain.user.UserEntity.Part;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//public class PostResponseDTO {
-//    @Getter
-//    @Setter
-//    public static class PostDetailDTO{
-//        private int post_id;
-//        private String title;
-//        private String content;
-//        private String image;
-//        private Category category;
-//        private String participant;
-//        private ProjectCategory projectCategory;
-//        private LocalDateTime period;
-//
-//        public PostDetailDTO(Post post, PostImage postImage){
-//            this.post_id = post.getPostId();
-//            this.title = post.getTitle();
-//            this.content = post.getContent();
-//            this.image = postImage.getImgUrl();
-//            this.category = post.getCategory();
-//            this.participant = post.getParticipant();
-//            this.projectCategory = post.getProjectCategory();
-//            this.period = post.getPeriod();
-//
-//        }
-//    }
-//
-//    @Getter
-//    @Setter
-//    public static class PostDTO{
-//        private int post_id;
-//        private String title;
-//        private String image;
-//        private Category category;
-//        private ProjectCategory ProjectCategory;
-//        private LocalDateTime period;
-//
-//        public PostDTO(Post post, PostImage image){
-//            this.post_id = post.getPostId();
-//            this.title = post.getTitle();
-//            this.image = image.getImgUrl();
-//            this.category = post.getCategory();
-//            this.ProjectCategory = post.getProjectCategory();
-//            this.period = post.getPeriod();
-//        }
-//    }
-//}
+
 @Getter
 @Setter
 public class PostResponseDTO {

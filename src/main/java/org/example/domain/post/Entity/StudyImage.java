@@ -32,12 +32,10 @@ public class StudyImage  {
     @Column(name = "thumbnail", nullable = false)
     private boolean thumbnail;
 
-    public StudyImage toEntity(Study study,String name,String url,boolean thumbnail){
-        return StudyImage.builder()
-                .name(name)
-                .url(url)
-                .thumbnail(thumbnail)
-                .study(study).build();
+    public StudyImage (String name,String url,boolean thumbnail){
+        this.name=name;
+        this.url=url;
+        this.thumbnail=thumbnail;
     }
 
 

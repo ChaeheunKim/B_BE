@@ -70,6 +70,7 @@ public class AdminpageController {
 
     //관리자 게시글 리스트 조회
     //TO DO : 페이징 처리
+    /*
     @GetMapping("/admin/post/{index}")
     public ResponseEntity getAdminPostList(@PathVariable("index") int index){
         Page<Post> posts = adminpageService.AdminPaging(index-1);
@@ -84,7 +85,7 @@ public class AdminpageController {
 
 
     }
-
+*/
 
 
 

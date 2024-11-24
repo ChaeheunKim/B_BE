@@ -1,18 +1,18 @@
 package org.example.domain.post.Repository;
 
-import org.example.domain.post.Entity.ProjectImage;
-import org.example.domain.post.Entity.Study;
+
 import org.example.domain.post.Entity.StudyImage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public interface StudyImageRepository extends JpaRepository<StudyImage, Long> {
 
-    List<StudyImage> findBy_IdAndImgThumbnailTrue(int Id);
 
-    Optional<StudyImage> findById(int Id);
+
+    Optional<StudyImage> findById(int id);
 
     List<StudyImage> findByStudyId(int studyId);
 

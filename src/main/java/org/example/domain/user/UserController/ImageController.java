@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.global.errors.ErrorCode;
 import org.example.global.errors.exception.Exception500;
 import org.example.global.response.ResponseEntityProvider;
-import org.example.domain.post.Service.PostService;
+import org.example.domain.post.Service.CommonService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/user/imageAdd") // API 경로 설정
 public class ImageController {
-    private final PostService postService;
+    private final CommonService commonService;
     private final ResponseEntityProvider responseEntityProvider;
 
 
@@ -30,7 +30,7 @@ public class ImageController {
     public ResponseEntity<?> uploadImage(
             @PathVariable("user_id") Long userId,
             @RequestPart(value = "image") MultipartFile image) {
-        boolean success = postService.createUserProfile(image,userId);
+        boolean success = commonService.createUserProfile(image,userId);
         if (success) {
             return responseEntityProvider.successWithoutData("이미지 업로드 되었습니다.");
         } else {

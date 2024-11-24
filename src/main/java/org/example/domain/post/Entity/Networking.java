@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Networking ")
+@Table(name = "Networking")
 public class Networking  extends BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,9 @@ public class Networking  extends BaseEntity  {
     @Column(nullable = false) // TEXT 사용 필요
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Object> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "networking", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NetworkingImage> images = new ArrayList<>();
 
     @Column(name = "participant", nullable = false) // Enum 사용필요
     private String participant;
@@ -39,17 +40,15 @@ public class Networking  extends BaseEntity  {
     private LocalDateTime period;
 
 
-    public Networking toEntity(PostRequestDTO postRequestDTO,List<Object> images){
-        return Networking.builder()
-                .title(postRequestDTO.getTitle())
-                .content(postRequestDTO.getContent())
-                .participant(postRequestDTO.getParticipant().toString())
-                .period(postRequestDTO.getPeriod())
-                .images(images)
-                .build();
+    public Networking(PostRequestDTO postRequestDTO,List<NetworkingImage> images){
+        this.title=postRequestDTO.getTitle();
+        this.content=postRequestDTO.getContent();
+        this.period=postRequestDTO.getPeriod();
+        this.participant= postRequestDTO.getParticipant().toString();
+        this.images=images;
     }
 
-    public void update(PostRequestDTO postRequestDTO,List<Object> images) {
+    public void update(PostRequestDTO postRequestDTO,List<NetworkingImage> images) {
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
         this.participant= postRequestDTO.getParticipant().toString();

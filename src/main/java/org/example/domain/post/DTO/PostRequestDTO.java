@@ -19,19 +19,11 @@ public class PostRequestDTO {
     private String content;
     private List<Map<String,Object>>  participant;
     private ProjectCategory projectCategory;
-    private LocalDateTime period; // 날짜 데이터 수정 필요
-    private boolean imgThumbnail; // 썸네일 번호 논의 필요
+    private LocalDateTime period;
+    private int imgThumbnail_id; // 썸네일 번호 논의 필요
     private Part part;
 
 
 
-    public String toString(List<Map<String,Object>> participant){
-        if (participant == null || participant.isEmpty()) {
-            return "";
-        }
-        return participant.stream()
-                .map(map -> (String) map.get("name"))
-                .filter(name -> name != null && !name.isEmpty())
-                .collect(Collectors.joining(","));
-    }
+
 }

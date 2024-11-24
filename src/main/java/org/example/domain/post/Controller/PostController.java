@@ -1,13 +1,13 @@
 package org.example.domain.post.Controller;
 
+//POST 쪽 api 아직 완성 안 되었습니다!! 실행 X 에러 나요!
 
-import jakarta.validation.Valid;
+/*
 import lombok.RequiredArgsConstructor;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.Entity.Project;
-import org.example.domain.post.Service.PostService;
-import org.example.domain.post.DTO.PostDetailResponseDTO;
-import org.example.domain.post.DTO.PostResponseDTO;
+import org.example.domain.post.Entity.ProjectImage;
+import org.example.domain.post.Service.*;
 import org.example.domain.adminpage.AdminService.AdminpageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,27 +16,25 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
-import static org.example.domain.post.Entity.ProjectCategory.Project;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class PostController {
 
-    private final PostService postService;
+    private final ProjectService projectService;
+    private final SeminarService seminarService;
+    private final StudyService studyService;
+    private final NetworkingService networkingService;
     private final AdminpageService adminpageService;
 
 
 
-    /*
-    * 게시글 등록
-    * @param PostRequestDTO
-    * @return post_id, post_name*/
 
-    @PostMapping(value = "/post/project", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<String> createPost(@RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ){
 
-        boolean success = postService.createPost(new Project(),requestDTO, image);
+    @PostMapping(value = "/post/seminar", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<String> createSeminarPost(@RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ){
+
+        boolean success = seminarService.createSeminarPost(requestDTO, image);
 
         if (success) {
             return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 생성되었습니다.");
@@ -44,7 +42,21 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성에 실패했습니다.");
         }
     }
-    /*
+
+
+
+    @PostMapping(value = "/post/project", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<String> createPost(@RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ){
+
+        boolean success = projectService.createProjectPost(requestDTO, image);
+
+        if (success) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 생성되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 생성에 실패했습니다.");
+        }
+    }
+
 
     //게시글 리스트 조회
     @GetMapping("/post")
@@ -97,9 +109,10 @@ public class PostController {
 
     }
 
-     */
+
 
 
 
 }
 
+*/
