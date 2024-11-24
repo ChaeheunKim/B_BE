@@ -1,5 +1,6 @@
 package org.example.domain.schedule.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,9 +33,13 @@ public class ScheduleParticipant extends BaseEntity {
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
+    @Column(name = "user_name", nullable = false)
+    private String userName;
+
     @Builder
-    public ScheduleParticipant(User user, Schedule schedule) {
+    public ScheduleParticipant(User user, Schedule schedule, String userName) {
         this.user = user;
         this.schedule = schedule;
+        this.userName = userName;
     }
 }

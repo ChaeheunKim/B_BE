@@ -3,7 +3,6 @@ package org.example.domain.schedule.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public record ScheduleRequestDTO(
         @NotBlank(message = "일정 날짜는 필수입니다.")

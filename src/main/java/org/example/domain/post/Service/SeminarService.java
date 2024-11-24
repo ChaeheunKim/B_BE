@@ -9,7 +9,6 @@ import org.example.domain.post.Entity.SeminarImage;
 import org.example.domain.post.Repository.SeminarImageRepository;
 import org.example.domain.post.Repository.SeminarRepository;
 import org.example.global.errors.ErrorCode;
-import org.example.global.errors.exception.Exception400;
 import org.example.global.errors.exception.Exception404;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

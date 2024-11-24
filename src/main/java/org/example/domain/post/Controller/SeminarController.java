@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.DTO.PostResponseDTO;
-import org.example.domain.post.Service.ProjectService;
 import org.example.domain.post.Service.SeminarService;
 import org.example.global.response.ResponseEntityProvider;
 import org.springframework.http.MediaType;
