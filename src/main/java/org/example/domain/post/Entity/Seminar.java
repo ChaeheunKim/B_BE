@@ -18,7 +18,6 @@ import java.util.List;
 @Builder
 @Table(name = "Seminar")
 public class Seminar extends BaseEntity  {
-    CommonService commonService;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class Seminar extends BaseEntity  {
     private List<SeminarImage> images = new ArrayList<>();
 
     @Column(name = "participant", nullable = false)
-    private String participant;
+    private List<String> participant;
 
 
     @Column(name = "period", nullable = false)
@@ -45,13 +44,13 @@ public class Seminar extends BaseEntity  {
         this.title=postRequestDTO.getTitle();
         this.content=postRequestDTO.getContent();
         this.period=postRequestDTO.getPeriod();
-        this.participant= commonService.toString(postRequestDTO.getParticipant());
+        this.participant= postRequestDTO.getParticipant();
     }
 
     public void update(PostRequestDTO postRequestDTO,List<SeminarImage> images) {
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
-        this.participant= postRequestDTO.getParticipant().toString();
+        this.participant= postRequestDTO.getParticipant();
         this.period=postRequestDTO.getPeriod();
         this.images=images;
     }

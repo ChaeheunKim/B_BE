@@ -17,7 +17,7 @@ public class PostRequestDTO {
     private int post_id;
     private String title;
     private String content;
-    private List<Map<String,Object>>  participant;
+    private List<String>  participant;
     private ProjectCategory projectCategory;
     private LocalDateTime period;
     private int imgThumbnail_id; // 썸네일 번호 논의 필요

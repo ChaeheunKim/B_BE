@@ -22,7 +22,7 @@ public class SeminarController {
         private final ResponseEntityProvider responseEntityProvider;
 
         //세미나 게시글 등록
-        @PostMapping(value = "/post/project", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+        @PostMapping(value = "/post/seminar", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
         public ResponseEntity<String> createProjectPost(@RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ){
 
             boolean success = seminarService.createSeminarPost(requestDTO, image);
@@ -36,7 +36,7 @@ public class SeminarController {
 
 
         //세미나 게시글 리스트 조회
-        @GetMapping("/post/project")
+        @GetMapping("/post/seminar")
         public ResponseEntity<?> getPostList(){
             List<PostResponseDTO.NetworkingandSeminarItem> postResponseDTO = seminarService.getSeminarList();
             return responseEntityProvider.successWithData("리스트 조회에 성공했습니다.",postResponseDTO);
@@ -44,7 +44,7 @@ public class SeminarController {
         }
 
         //세미나 게시글 수정
-        @PatchMapping(value = "/post/project/{post_id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+        @PatchMapping(value = "/post/seminar/{post_id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
         public ResponseEntity<String> ModifyPost(@Valid @PathVariable("post_id") int post_id, @RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ) throws IllegalAccessException {
 
             boolean success = seminarService.SeminarUpdatePost(post_id,requestDTO,image);
@@ -57,7 +57,7 @@ public class SeminarController {
         }
 
         //프로젝트 게시글 삭제
-        @DeleteMapping("/post/project/{post_id}")
+        @DeleteMapping("/post/seminar/{post_id}")
         public ResponseEntity<?> deletePost(@PathVariable("post_id") int post_id) {
 
             boolean success = seminarService.deleteSeminarPost(post_id);
