@@ -1,5 +1,6 @@
 package org.example.domain.schedule.service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.example.domain.schedule.repository.ScheduleParticipantRepository;
 import org.example.domain.schedule.repository.ScheduleRepository;
 import org.example.domain.user.UserEntity.User;
 import org.example.domain.user.UserRepository.UserRepository;
+import org.example.global.errors.BusinessException;
+import org.example.global.errors.ErrorCode;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -66,6 +69,42 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void updateSchedule(Long scheduleId, ScheduleRequestDTO requestDTO) {
+        // 1. Schedule 업데이트
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_SCHEDULE));
+
+        schedule.update(requestDTO.name(), requestDTO.period(), requestDTO.content());
+        scheduleRepository.save(schedule);
+
+        // 2. 기존 참석자 조회 및 삭제된 참석자 제거
+        List<String> existingParticipantNames = scheduleParticipantRepository.findByScheduleId(scheduleId).stream()
+                .peek(participantList -> {
+                    if (!requestDTO.participant().contains(participantList.getUserName())) {
+                        scheduleParticipantRepository.delete(participantList);
+                    }
+                })
+                .map(ScheduleParticipant::getUserName)
+                .collect(Collectors.toList());
+
+        // 3. 추가할 참석자 처리
+        List<User> usersToAdd = userRepository.findByNameIn(
+                requestDTO.participant().stream()
+                        .filter(name -> !existingParticipantNames.contains(name))
+                        .collect(Collectors.toList())
+        );
+
+        usersToAdd.forEach(user -> scheduleParticipantRepository.save(
+                ScheduleParticipant.builder()
+                        .schedule(schedule)
+                        .user(user)
+                        .userName(user.getName())
+                        .build()
+        ));
+    }
+
+    @Transactional
     public void deleteSchedule(Long scheduleId) {
         scheduleParticipantRepository.deleteByScheduleId(scheduleId);
         scheduleRepository.deleteById(scheduleId);

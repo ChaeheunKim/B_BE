@@ -10,11 +10,13 @@ import org.example.global.response.ResponseEntityProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -48,10 +50,17 @@ public class ScheduleController {
         return responseEntityProvider.successWithData("참여자 리스트를 성공적으로 조회했습니다.", participantList);
     }
 
+    @PatchMapping(value = "/schedule/{schedule_id}")
+    public ResponseEntity<?> updateSchedule(@PathVariable("schedule_id") Long scheduleId, @RequestBody ScheduleRequestDTO requestDTO) {
+        scheduleService.updateSchedule(scheduleId, requestDTO);
+
+        return responseEntityProvider.successWithoutData("일정 수정 완료");
+    }
+
     @DeleteMapping(value = "/schedule/{schedule_id}")
     public ResponseEntity<?> deleteSchedule(@PathVariable("schedule_id") Long scheduleId) {
         scheduleService.deleteSchedule(scheduleId);
-        
+
         return responseEntityProvider.successWithoutData("일정 삭제 완료");
     }
 }

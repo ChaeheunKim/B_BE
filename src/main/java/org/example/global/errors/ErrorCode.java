@@ -53,7 +53,7 @@ public enum ErrorCode {
         NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
         NOT_FOUND_POST(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."),
         NOT_FOUND_ENTITY(HttpStatus.NOT_FOUND, "존재하지 않은 엔티티입니다."),
-
+        NOT_FOUND_SCHEDULE(HttpStatus.NOT_FOUND, "존재하지 않는 일정입니다."),
 
 
         // Method Not Allowed Error(405)

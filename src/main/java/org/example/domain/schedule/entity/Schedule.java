@@ -38,4 +38,11 @@ public class Schedule extends BaseEntity {
         this.period = period;
         this.content = content;
     }
+
+    // 수정 메서드 추가
+    public void update(String name, LocalDate period, String content) {
+        this.name = name;
+        this.period = period;
+        this.content = content;
+    }
 }
