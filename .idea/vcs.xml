@@ -2,13 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../2024_BEOTKKOTTHON_TEAM_22_BE" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../Dive" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../Spring-Study" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../Team-A-BE" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../Team-A-BE/Team-A-ENV" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../back-end" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../hello-spring/Spring-Study" vcs="Git" />
   </component>
 </project>

@@ -3,15 +3,12 @@ package org.example.domain.post.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.post.DTO.PostRequestDTO;
-import org.example.domain.post.Service.CommonService;
 import org.example.domain.post.Service.StringConverter;
 import org.example.domain.user.UserEntity.BaseEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
 @Builder
 @Table(name = "project")
 public class Project extends BaseEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +31,7 @@ public class Project extends BaseEntity {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<ProjectImage> images = new ArrayList<>();
+
 
     @Column(name = "participant", nullable = false, columnDefinition = "TEXT")
     @Convert(converter = StringConverter.class)

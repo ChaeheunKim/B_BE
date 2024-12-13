@@ -19,6 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 @Table(name = "Seminar")
+
 public class Seminar extends BaseEntity {
 
 
@@ -35,6 +36,7 @@ public class Seminar extends BaseEntity {
 
     @OneToMany(mappedBy = "seminar", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<SeminarImage> images = new ArrayList<>();
+
 
     @Column(name = "participant", nullable = false, columnDefinition = "TEXT")
     @Convert(converter = StringConverter.class)

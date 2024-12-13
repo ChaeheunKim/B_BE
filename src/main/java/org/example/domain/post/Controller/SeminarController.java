@@ -1,80 +1,113 @@
-package org.example.domain.post.Controller;
+package org.example.domain.post.Service;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.post.DTO.PostDetailResponseDTO;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.DTO.PostResponseDTO;
-import org.example.domain.post.Service.SeminarService;
-import org.example.global.response.ResponseEntityProvider;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.example.domain.post.Entity.Seminar;
+import org.example.domain.post.Entity.SeminarImage;
+import org.example.domain.post.Repository.SeminarImageRepository;
+import org.example.domain.post.Repository.SeminarRepository;
+import org.example.global.errors.ErrorCode;
+import org.example.global.errors.exception.Exception404;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
-@RestController
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
 @RequiredArgsConstructor
-@RequestMapping(value = "/api")
-public class SeminarController {
+public class SeminarService {
 
-        private final SeminarService seminarService;
-        private final ResponseEntityProvider responseEntityProvider;
+    private final PostImageService postImageService;
+    private final SeminarRepository seminarRepository;
+    private final SeminarImageRepository seminarImageRepository;
+    private final CommonService commonService;
 
-        //세미나 게시글 등록
-        @PostMapping(value = "/post/seminar", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-        public ResponseEntity<String> createProjectPost(@RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ){
+    //세미나 게시글 등록
+    public  boolean createSeminarPost(PostRequestDTO requestDTO, List<MultipartFile> images) {
 
-            boolean success = seminarService.createSeminarPost(requestDTO, image);
-
-            if (success) {
-                return responseEntityProvider.successWithoutData("게시글 생성에 성공했습니다.");
-            } else {
-                return responseEntityProvider.FailWithoutData("게시글 생성에 실패하였습니다");
-            }
+        try {
+            Seminar seminar = new Seminar(requestDTO);
+            seminarRepository.save(seminar);
+            int imgThumbnail_id = requestDTO.getImgThumbnail_id();
+            // Spring이 주입한 PostImageService를 사용해 이미지 저장
+            List<SeminarImage> imageEntities = postImageService.uploadSeminarImages(seminar.getId(),images, imgThumbnail_id);
+            seminar.setImages(imageEntities);
+            seminarRepository.save(seminar);
+            return true;
         }
-
-
-        //세미나 게시글 리스트 조회
-        @GetMapping("/post/seminar")
-        public ResponseEntity<?> getPostList(){
-            List<PostResponseDTO.NetworkingandSeminarItem> postResponseDTO = seminarService.getSeminarList();
-            return responseEntityProvider.successWithData("리스트 조회에 성공했습니다.",postResponseDTO);
+        catch(Exception e){
+            throw new RuntimeException(e);
 
         }
 
-        //세미나 게시글 수정
-        @PatchMapping(value = "/post/seminar/{post_id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-        public ResponseEntity<String> ModifyPost(@Valid @PathVariable("post_id") int post_id, @RequestPart(value = "post", required = true) PostRequestDTO requestDTO, @RequestPart(value = "image", required = false) List<MultipartFile> image ) throws IllegalAccessException {
-
-            boolean success = seminarService.SeminarUpdatePost(post_id,requestDTO,image);
-
-            if (success) {
-                return responseEntityProvider.successWithoutData("게시글 수정에 성공했습니다.");
-            } else {
-                return responseEntityProvider.FailWithoutData("게시글 수정에 실패하였습니다");
-            }
-        }
-
-        //세미나 게시글 삭제
-        @DeleteMapping("/post/seminar/{post_id}")
-        public ResponseEntity<?> deletePost(@PathVariable("post_id") int post_id) {
-
-            boolean success = seminarService.deleteSeminarPost(post_id);
-
-            if (success) {
-                return responseEntityProvider.successWithoutData("게시글 삭제에 성공했습니다.");
-            } else {
-                return responseEntityProvider.FailWithoutData("게시글 삭제에 실패하였습니다");
-            }
-
-        }
-
-    //세미나 게시글 세부정보 조히
-    @GetMapping("post/seminar/{post_id}")
-    public ResponseEntity<?> detailPost(@PathVariable("post_id") int post_id){
-        PostDetailResponseDTO postDetailResponseDTO = seminarService.detailSeminarPost(post_id);
-        return responseEntityProvider.successWithData("게시글 세부정보 조회에 성공했습니다.",postDetailResponseDTO);
     }
-}
 
+    //세미나 게시글 수정
+    public  boolean SeminarUpdatePost(int Id, PostRequestDTO postRequestDTO, List<MultipartFile> images) {
+        int imgThumbnail_id = postRequestDTO.getImgThumbnail_id();
+        List<SeminarImage> imageentities = postImageService.uploadSeminarImages(Id,images, imgThumbnail_id);
+        boolean success = false;
+        try {
+            Optional<Seminar> seminar = seminarRepository.findById(Id);
+            seminar.get().update(postRequestDTO, imageentities);
+            seminarRepository.save(seminar.get());
+            success = true;
+        }
+        catch(Exception e) {
+            throw new Exception404(null, ErrorCode.NOT_FOUND_POST);
+        }
+
+        return success;
+    }
+
+    //세미나 게시글 조회
+    public List<PostResponseDTO.NetworkingandSeminarItem> getSeminarList() {
+        return seminarRepository.findAll().stream()
+                .flatMap(seminar ->
+                        seminarImageRepository.findBySeminar(seminar).stream()
+                                .filter(SeminarImage::isThumbnail)
+                                .map(seminarImage -> new PostResponseDTO.NetworkingandSeminarItem(
+                                        seminar.getTitle(),
+                                        seminarImage.getUrl(),
+                                        seminar.getPeriod()
+                                ))
+                )
+                .collect(Collectors.toList());
+    }
+
+
+    //세미나 게시글 삭제
+    public boolean deleteSeminarPost(int Id) {
+        boolean success = false;
+        try {
+
+            Optional<Seminar> seminar = seminarRepository.findById(Id);
+            List<SeminarImage> images = seminarImageRepository.findBySeminar(seminar.get());
+            seminarRepository.delete(seminar.get());
+            commonService.deleteImagesFromS3(images);
+            seminarImageRepository.deleteAll(images);
+            return true;
+
+        } catch (Exception e) {
+            throw new Exception404(null, ErrorCode.NOT_FOUND_POST);
+        }
+    }
+
+    //세미나 게시글 세부정보 조회
+    public PostDetailResponseDTO detailSeminarPost(int post_id){
+        Seminar seminar = seminarRepository.findById(post_id)
+                .orElseThrow(() -> new Exception404(null, ErrorCode.NOT_FOUND_POST));
+
+        List<String> imageUrls = seminarImageRepository.findBySeminar(seminar).stream()
+                .map(projectImage -> projectImage.getUrl())
+                .collect(Collectors.toList());
+
+        return new PostDetailResponseDTO(seminar.getTitle(), seminar.getContent(), seminar.getPeriod(), imageUrls, seminar.getParticipant(), null, null);
+
+
+    }
+
+}

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.post.DTO.PostDetailResponseDTO;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.DTO.PostResponseDTO;
-import org.example.domain.post.Entity.Project;
+//import org.example.domain.post.Entity.Project;
 import org.example.domain.post.Entity.Seminar;
 import org.example.domain.post.Entity.SeminarImage;
 import org.example.domain.post.Repository.SeminarImageRepository;
