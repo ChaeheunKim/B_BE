@@ -3,14 +3,11 @@ package org.example.domain.post.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.post.DTO.PostRequestDTO;
-import org.example.domain.post.Service.CommonService;
 import org.example.domain.user.UserEntity.BaseEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -20,7 +17,6 @@ import java.util.stream.Collectors;
 @Builder
 @Table(name = "project")
 public class Project extends BaseEntity {
-    CommonService commonService;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +32,7 @@ public class Project extends BaseEntity {
     private List<ProjectImage> images = new ArrayList<>();
 
     @Column(name = "participant", nullable = false) // Enum 사용필요
-    private String participant;
+    private List<String> participant;
 
 
     @Column(name = "period", nullable = false) // 날짜를 @Valid해서 유효성 체크해줘야함.
@@ -50,14 +46,14 @@ public class Project extends BaseEntity {
         this.title=postRequestDTO.getTitle();
         this.content=postRequestDTO.getContent();
         this.period=postRequestDTO.getPeriod();
-        this.participant= commonService.toString(postRequestDTO.getParticipant());
+        this.participant= postRequestDTO.getParticipant();
         this.projectCategory=postRequestDTO.getProjectCategory();
     }
 
     public void update(PostRequestDTO postRequestDTO,List<ProjectImage> images) {
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
-        this.participant= commonService.toString(postRequestDTO.getParticipant());
+        this.participant= postRequestDTO.getParticipant();
         this.period=postRequestDTO.getPeriod();
         this.images=images;
         this.projectCategory=postRequestDTO.getProjectCategory();
