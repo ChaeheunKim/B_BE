@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.Service.CommonService;
+import org.example.domain.post.Service.StringConverter;
 import org.example.domain.user.UserEntity.BaseEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -17,8 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "Seminar")
-public class Seminar extends BaseEntity  {
-    CommonService commonService;
+public class Seminar extends BaseEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +36,9 @@ public class Seminar extends BaseEntity  {
     @OneToMany(mappedBy = "seminar", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<SeminarImage> images = new ArrayList<>();
 
-    @Column(name = "participant", nullable = false)
-    private String participant;
+    @Column(name = "participant", nullable = false, columnDefinition = "TEXT")
+    @Convert(converter = StringConverter.class)
+    private List<String> participant;
 
 
     @Column(name = "period", nullable = false)
@@ -45,13 +48,13 @@ public class Seminar extends BaseEntity  {
         this.title=postRequestDTO.getTitle();
         this.content=postRequestDTO.getContent();
         this.period=postRequestDTO.getPeriod();
-        this.participant= commonService.toString(postRequestDTO.getParticipant());
+        this.participant= postRequestDTO.getParticipant();
     }
 
     public void update(PostRequestDTO postRequestDTO,List<SeminarImage> images) {
         this.title = postRequestDTO.getTitle();
         this.content = postRequestDTO.getContent();
-        this.participant= postRequestDTO.getParticipant().toString();
+        this.participant= postRequestDTO.getParticipant();
         this.period=postRequestDTO.getPeriod();
         this.images=images;
     }

@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface NetworkingRepository extends JpaRepository<Networking, Integer> {
 
 
-    Networking findById(int id);
+
 
 
 }

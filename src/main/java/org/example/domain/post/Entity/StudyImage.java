@@ -32,10 +32,11 @@ public class StudyImage  {
     @Column(name = "thumbnail", nullable = false)
     private boolean thumbnail;
 
-    public StudyImage (String name,String url,boolean thumbnail){
+    public StudyImage (String name,String url,boolean thumbnail,Study study){
         this.name=name;
         this.url=url;
         this.thumbnail=thumbnail;
+        this.study=study;
     }
 
 

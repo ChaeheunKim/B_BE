@@ -31,10 +31,11 @@ public  class NetworkingImage {
     @Column(name = "thumbnail", nullable = false)
     private boolean thumbnail;
 
-    public NetworkingImage(String name, String url, boolean thumbnail) {
+    public NetworkingImage(String name, String url, boolean thumbnail,Networking networking) {
         this.name = name;
         this.url = url;
         this.thumbnail = thumbnail;
+        this.networking=networking;
     }
 }
 
