@@ -1,6 +1,7 @@
 package org.example.domain.post.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.post.DTO.PostDetailResponseDTO;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.DTO.PostResponseDTO;
 //import org.example.domain.post.Entity.Project;
@@ -12,9 +13,9 @@ import org.example.global.errors.ErrorCode;
 import org.example.global.errors.exception.Exception404;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class SeminarService {
             seminarRepository.save(seminar);
             int imgThumbnail_id = requestDTO.getImgThumbnail_id();
             // Spring이 주입한 PostImageService를 사용해 이미지 저장
-            List<SeminarImage> imageEntities = postImageService.uploadSeminarImages(images, imgThumbnail_id);
+            List<SeminarImage> imageEntities = postImageService.uploadSeminarImages(seminar.getId(),images, imgThumbnail_id);
             seminar.setImages(imageEntities);
             seminarRepository.save(seminar);
             return true;
@@ -46,17 +47,17 @@ public class SeminarService {
     }
 
     //세미나 게시글 수정
-    public  boolean SeminarUpdatePost(int Id, PostRequestDTO postRequestDTO, List<MultipartFile> images) throws IllegalAccessException {
+    public  boolean SeminarUpdatePost(int Id, PostRequestDTO postRequestDTO, List<MultipartFile> images) {
         int imgThumbnail_id = postRequestDTO.getImgThumbnail_id();
-        List<SeminarImage> imageentities = postImageService.uploadSeminarImages(images, imgThumbnail_id);
+        List<SeminarImage> imageentities = postImageService.uploadSeminarImages(Id,images, imgThumbnail_id);
         boolean success = false;
         try {
-            Seminar semnar = seminarRepository.findById(Id);
-            semnar.update(postRequestDTO, imageentities);
+            Optional<Seminar> seminar = seminarRepository.findById(Id);
+            seminar.get().update(postRequestDTO, imageentities);
+            seminarRepository.save(seminar.get());
             success = true;
         }
         catch(Exception e) {
-            success = false;
             throw new Exception404(null, ErrorCode.NOT_FOUND_POST);
         }
 
@@ -65,14 +66,17 @@ public class SeminarService {
 
     //세미나 게시글 조회
     public List<PostResponseDTO.NetworkingandSeminarItem> getSeminarList() {
-        List<Seminar> seminarList = seminarRepository.findAll();
-        List<PostResponseDTO.NetworkingandSeminarItem> seminarItemList = new ArrayList<>();
-        for (Seminar seminar : seminarList) {
-            SeminarImage image = seminarImageRepository.findBythumbnailTrue();
-            PostResponseDTO.NetworkingandSeminarItem postResponseDTO = new PostResponseDTO.NetworkingandSeminarItem(seminar.getTitle(), image.getUrl(), seminar.getPeriod());
-            seminarItemList.add(postResponseDTO);
-        }
-        return seminarItemList;
+        return seminarRepository.findAll().stream()
+                .flatMap(seminar ->
+                        seminarImageRepository.findBySeminar(seminar).stream()
+                                .filter(SeminarImage::isThumbnail)
+                                .map(seminarImage -> new PostResponseDTO.NetworkingandSeminarItem(
+                                        seminar.getTitle(),
+                                        seminarImage.getUrl(),
+                                        seminar.getPeriod()
+                                ))
+                )
+                .collect(Collectors.toList());
     }
 
 
@@ -81,9 +85,9 @@ public class SeminarService {
         boolean success = false;
         try {
 
-            Seminar seminar = seminarRepository.findById(Id);
-            seminarRepository.delete(seminar);
-            List<SeminarImage> images = seminarImageRepository.findBySeminarId(Id);
+            Optional<Seminar> seminar = seminarRepository.findById(Id);
+            List<SeminarImage> images = seminarImageRepository.findBySeminar(seminar.get());
+            seminarRepository.delete(seminar.get());
             commonService.deleteImagesFromS3(images);
             seminarImageRepository.deleteAll(images);
             return true;
@@ -91,6 +95,20 @@ public class SeminarService {
         } catch (Exception e) {
             throw new Exception404(null, ErrorCode.NOT_FOUND_POST);
         }
+    }
+
+    //세미나 게시글 세부정보 조회
+    public PostDetailResponseDTO detailSeminarPost(int post_id){
+        Seminar seminar = seminarRepository.findById(post_id)
+                .orElseThrow(() -> new Exception404(null, ErrorCode.NOT_FOUND_POST));
+
+        List<String> imageUrls = seminarImageRepository.findBySeminar(seminar).stream()
+                .map(projectImage -> projectImage.getUrl())
+                .collect(Collectors.toList());
+
+        return new PostDetailResponseDTO(seminar.getTitle(), seminar.getContent(), seminar.getPeriod(), imageUrls, seminar.getParticipant(), null, null);
+
+
     }
 
 }

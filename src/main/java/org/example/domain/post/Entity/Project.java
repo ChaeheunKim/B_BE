@@ -3,6 +3,7 @@ package org.example.domain.post.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.post.DTO.PostRequestDTO;
+import org.example.domain.post.Service.StringConverter;
 import org.example.domain.user.UserEntity.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,9 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<ProjectImage> images = new ArrayList<>();
 
-    @Column(name = "participant", nullable = false) // Enum 사용필요
+
+    @Column(name = "participant", nullable = false, columnDefinition = "TEXT")
+    @Convert(converter = StringConverter.class)
     private List<String> participant;
 
 

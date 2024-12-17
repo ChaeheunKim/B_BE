@@ -2,6 +2,7 @@ package org.example.domain.post.Controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.post.DTO.PostDetailResponseDTO;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.DTO.PostResponseDTO;
 import org.example.domain.post.Service.ProjectService;
@@ -67,5 +68,12 @@ public class ProejctController {
             return responseEntityProvider.FailWithoutData("게시글 삭제에 실패하였습니다");
         }
 
+    }
+
+    //프로젝트 게시글 세부정보 조히
+    @GetMapping("post/project/{post_id}")
+    public ResponseEntity<?> detailPost(@PathVariable("post_id") int post_id){
+        PostDetailResponseDTO postDetailResponseDTO = projectService.detailProjectPost(post_id);
+        return responseEntityProvider.successWithData("게시글 세부정보 조회에 성공했습니다.",postDetailResponseDTO);
     }
 }

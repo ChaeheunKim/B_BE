@@ -32,10 +32,11 @@ public class SeminarImage  {
     @Column(name = "thumbnail", nullable = false)
     private boolean thumbnail;
 
-    public SeminarImage (String name,String url,boolean thumbnail){
+    public SeminarImage (String name,String url,boolean thumbnail,Seminar seminar){
         this.name=name;
         this.url=url;
         this.thumbnail=thumbnail;
+        this.seminar=seminar;
     }
 
 

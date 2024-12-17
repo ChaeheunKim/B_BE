@@ -32,6 +32,9 @@ public class PostImageService {
     private final UserImageRepository userImageRepository;
     private final S3Client s3Client;
     private final ProjectRepository projectRepository;
+    private final SeminarRepository seminarRepository;
+    private final StudyRepository studyRepository;
+    private final NetworkingRepository networkingRepository;
 
 
 
@@ -63,53 +66,61 @@ public class PostImageService {
     }
 
     //세미나 이미지 업로드
-    public List<SeminarImage> uploadSeminarImages(List<MultipartFile> images, int imgThumbnail_id){
+    public List<SeminarImage> uploadSeminarImages(int seminar_id,List<MultipartFile> images, int imgThumbnail_id){
         List<SeminarImage> createdEntities = new ArrayList<>();
         int index = 1;
+        Optional<Seminar> seminar = seminarRepository.findById(seminar_id);
         for (MultipartFile image : images) {
             String s3ImageUrl = saveImageToS3(image);
             String imgName = image.getOriginalFilename();
             boolean imgThumbnail = (index == imgThumbnail_id);
 
-            SeminarImage SeminarImageEntity=new SeminarImage(imgName,s3ImageUrl,imgThumbnail);
+            SeminarImage SeminarImageEntity=new SeminarImage(imgName,s3ImageUrl,imgThumbnail,seminar.get());
             seminarImageRepository.save(SeminarImageEntity);
             createdEntities.add(SeminarImageEntity);
+
+            index++;
         }
         return createdEntities;
 
     }
 
     //스터디 이미지 업로드
-    public List<StudyImage> uploadStudyImages(List<MultipartFile> images, int imgThumbnail_id){
+    public List<StudyImage> uploadStudyImages(int study_id,List<MultipartFile> images, int imgThumbnail_id){
         List<StudyImage> createdEntities = new ArrayList<>();
         int index = 1;
-
+        Optional<Study> study=studyRepository.findById(study_id);
         for (MultipartFile image : images) {
             String s3ImageUrl = saveImageToS3(image);
             String imgName = image.getOriginalFilename();
             boolean imgThumbnail = (index == imgThumbnail_id);
 
-            StudyImage StudyImageEntity=new StudyImage(imgName,s3ImageUrl,imgThumbnail);
+            StudyImage StudyImageEntity=new StudyImage(imgName,s3ImageUrl,imgThumbnail,study.get());
             studyImageRepository.save(StudyImageEntity);
             createdEntities.add(StudyImageEntity);
+
+            index++;
         }
         return createdEntities;
 
     }
 
     //네트워킹 이미지 업로드
-    public List<NetworkingImage> uploadNetworkingImages(List<MultipartFile> images, int imgThumbnail_id){
+    public List<NetworkingImage> uploadNetworkingImages(int networking_id,List<MultipartFile> images, int imgThumbnail_id){
         List<NetworkingImage> createdEntities = new ArrayList<>();
         int index = 1;
+        Optional<Networking> networking=networkingRepository.findById(networking_id);
 
         for (MultipartFile image : images) {
             String s3ImageUrl = saveImageToS3(image);
             String imgName = image.getOriginalFilename();
             boolean imgThumbnail = (index == imgThumbnail_id);
 
-            NetworkingImage NetworkingImageEntity = new NetworkingImage(imgName,s3ImageUrl,imgThumbnail);
+            NetworkingImage NetworkingImageEntity = new NetworkingImage(imgName,s3ImageUrl,imgThumbnail,networking.get());
             networkingImageRepository.save(NetworkingImageEntity);
             createdEntities.add(NetworkingImageEntity);
+
+            index++;
         }
         return createdEntities;
 

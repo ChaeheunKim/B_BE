@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface SeminarRepository extends JpaRepository<Seminar, Integer> {
 
 
-    Seminar findById(int id);
+
 
 
 }

@@ -1,6 +1,7 @@
 package org.example.domain.post.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.post.DTO.PostDetailResponseDTO;
 import org.example.domain.post.DTO.PostRequestDTO;
 import org.example.domain.post.DTO.PostResponseDTO;
 import org.example.domain.post.Entity.*;
@@ -10,11 +11,10 @@ import org.example.global.errors.ErrorCode;
 import org.example.global.errors.exception.Exception404;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class ProjectService {
     }
 
     //프로젝트 게시글 수정
-    public  boolean ProjectUpdatePost(int Id, PostRequestDTO postRequestDTO, List<MultipartFile> images) throws IllegalAccessException {
+    public  boolean ProjectUpdatePost(int Id, PostRequestDTO postRequestDTO, List<MultipartFile> images){
         int imgThumbnail_id = postRequestDTO.getImgThumbnail_id();
         List<ProjectImage> imageentities = postImageService.uploadProjectImages(Id,images, imgThumbnail_id);
         boolean success = false;
@@ -57,7 +57,6 @@ public class ProjectService {
             success = true;
         }
        catch(Exception e) {
-            success = false;
             throw new Exception404(null, ErrorCode.NOT_FOUND_POST);
         }
 
@@ -74,7 +73,8 @@ public class ProjectService {
                                 .map(projectImage -> new PostResponseDTO.ProjectItem(
                                         project.getTitle(),
                                         projectImage.getUrl(),
-                                        project.getProjectCategory()
+                                        project.getProjectCategory(),
+                                        project.getPeriod()
                                 ))
                 )
                 .collect(Collectors.toList());
@@ -82,12 +82,11 @@ public class ProjectService {
 
     //프로젝트 게시글 삭제
     public boolean deleteProjectPost(int Id) {
-        boolean success = false;
         try {
 
                 Optional<Project> project = projectRepository.findById(Id);
-                projectRepository.delete(project.get());
                 List<ProjectImage> images = projectImageRepository.findByProject(project.get());
+                projectRepository.delete(project.get());
                 commonService.deleteImagesFromS3(images);
                 projectImageRepository.deleteAll(images);
             return true;
@@ -97,5 +96,19 @@ public class ProjectService {
                 throw new Exception404(null, ErrorCode.NOT_FOUND_POST);
             }
         }
+
+    //프로젝트 게시글 세부정보 조회
+    public  PostDetailResponseDTO detailProjectPost(int post_id){
+        Project project = projectRepository.findById(post_id)
+                .orElseThrow(() -> new Exception404(null, ErrorCode.NOT_FOUND_POST));
+
+        List<String> imageUrls = projectImageRepository.findByProject(project).stream()
+                .map(projectImage -> projectImage.getUrl())
+                .collect(Collectors.toList());
+
+        return new PostDetailResponseDTO(project.getTitle(), project.getContent(), project.getPeriod(), imageUrls, project.getParticipant(), null, project.getProjectCategory());
+
+
+    }
 
 }
