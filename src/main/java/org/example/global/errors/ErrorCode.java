@@ -35,12 +35,13 @@ public enum ErrorCode {
         TOKEN_UNSUPPORTED_ERROR(HttpStatus.UNAUTHORIZED, "지원하지 않는 토큰입니다."),
         TOKEN_GENERATION_ERROR(HttpStatus.UNAUTHORIZED, "토큰 생성에 실패하였습니다."),
         TOKEN_UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "알 수 없는 토큰입니다."),
+        FAILURE_PASSWORD(HttpStatus.UNAUTHORIZED, "현재 비밀번호와 다릅니다"),
 
 
 
 
         // Access Denied Error(403)
-        ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+        ACCESS_DENIED(HttpStatus.FORBIDDEN, "승인되지 않았습니다"),
         NOT_MATCH_USER(HttpStatus.FORBIDDEN, "해당 사용자가 일치하지 않습니다."),
 
 

@@ -1,5 +1,7 @@
 package org.example.domain.user.UserDTO;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.domain.user.UserEntity.BaseEntity;
@@ -19,11 +21,13 @@ public class UserResponseDTO  {
     @Setter
     public static class LoginResponseWithTokenDTO {
         private LoginResponseDTO loginResponseDTO;
-        private String token;
+        private String accesstoken;
 
-        public LoginResponseWithTokenDTO(LoginResponseDTO loginResponseDTO, String token) {
+
+        public LoginResponseWithTokenDTO(LoginResponseDTO loginResponseDTO, String accesstoken) {
             this.loginResponseDTO = loginResponseDTO;
-            this.token = token;
+            this.accesstoken = accesstoken;
+
         }
     }
 
@@ -34,14 +38,16 @@ public class UserResponseDTO  {
         String email;
         String password;
         Role role;
+        String image;
 
 
 
 
-        public LoginResponseDTO(String email, String password, Role role) {
+        public LoginResponseDTO(String email, String password, Role role,String image) {
             this.email = email;
             this.password=password;
             this.role = role;
+            this.image=image;
         }
 
     }

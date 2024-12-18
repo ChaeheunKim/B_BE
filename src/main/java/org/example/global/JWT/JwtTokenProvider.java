@@ -1,6 +1,7 @@
 package org.example.global.JWT;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.example.domain.user.UserEntity.Role;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.security.SignatureException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -43,6 +45,7 @@ public class JwtTokenProvider {
     }
 
 
+
     public String getSubjectFromToken(String token) {
 
         return Jwts.parserBuilder()
@@ -52,6 +55,8 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
     }
+
+
 
 
 

@@ -35,10 +35,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        String token =  getTokenFromRequest(request);
+        String token = getTokenFromRequest(request);
         if (token != null && !token.isBlank()) {
             try {
-                String subject = jwtTokenProvider.getSubjectFromToken(token); // 토큰에서 subject 추출 및 만료 시간 검증
+                String subject = jwtTokenProvider.getSubjectFromToken(token);// 토큰에서 subject 추출 및 만료 시간 검증
                 UserDetails user = principalUserDetailService.loadUserByUsername(subject);
 
                 // 사용자 존재 여부 확인 후 인증 객체 생성 및 SecurityContext에 저장

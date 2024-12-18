@@ -5,7 +5,7 @@ public enum Role {
 
         USER("동아리멤버"),
 
-        ADMIN("부회장");
+        ADMIN("회장");
         private final String description;
 
         Role (String description) {

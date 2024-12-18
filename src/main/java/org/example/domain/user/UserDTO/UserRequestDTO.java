@@ -99,5 +99,25 @@ public class UserRequestDTO {
         }
     }
 
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    public static class changepasswordRequestDTO{
+        @NotNull(message = "기존 비밀번호는 필수 입력 값입니다.")
+        private String currentPassword;
+        @NotNull(message = "새로운 비밀번호는 필수 입력 값입니다.")
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$",message = "영문자/숫자/특수문자가 포함된 8~15자로 입력해주세요.")
+        private String NewPassword;
+        private Long user_id;
+
+        public changepasswordRequestDTO(String currentPassword, String NewPassword,Long user_id){
+            this.currentPassword=currentPassword;
+            this.NewPassword=NewPassword;
+            this.user_id=user_id;
+        }
+
+    }
+    
+
 
 }

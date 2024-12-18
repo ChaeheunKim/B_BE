@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.domain.post.DTO.PostRequestDTO;
+import org.example.domain.post.Entity.ProjectImage;
+import org.example.domain.user.UserDTO.MypageReqeustDTO;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,5 +57,12 @@ public class User extends BaseEntity {
        this.email=email;
        this.state=state;
     }
+    public void update(MypageReqeustDTO mypageRequestDTO) {
+        this.name=mypageRequestDTO.getName();
+        this.email=mypageRequestDTO.getEmail();
+        this.cardinal=mypageRequestDTO.getCardinal();
+        this.part=mypageRequestDTO.getPart();
+    }
+
 
 }
